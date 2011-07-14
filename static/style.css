@@ -1,0 +1,18 @@
+body {
+    width: 900px;
+}
+
+span.action {
+    width: 28px;
+    vertical-align: top;
+    text-align: center;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    padding: 4px;
+    line-height: 19px;
+    color: #fff;
+    display: inline-block;
+    margin;right: 5px;
+}
+

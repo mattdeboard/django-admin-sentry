@@ -1,0 +1,45 @@
+{% extends "admin_sentry/layout.html" %}
+{% load i18n %}
+{% load helpertags %}
+
+{% block heading %}{% trans "Dashboard" %}{% endblock %}
+
+{% block sidebar %}
+    {% if chart_url %}
+        <h2>{% trans "Last 24 Hours" %}</h2>
+        <img src="{{ chart_url }}" class="chart" alt="chart"/>
+    {% endif %}
+
+    {% for filter in filters %}
+        <div class="sidebar-module sidebar-module-{{ filter.column }}">
+            {% if filter.show_label %}
+                <h2>{% trans filter.label %}</h2>
+            {% endif %}
+            <form method="get" action="{{ filter.get_query_string|safe }}">
+                {{ filter.render }}
+            </form>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block main %}
+{% for result in results %}
+<ul class="entries" id="entry_list">
+    <li class="row">
+        <span class="action {{ result.action_flag|trans_actions }}">{{ result.action_flag|abbrev}}</span>
+        {% if result.change_message %}
+        <span class="changemsg">{{ result.change_message }}</span>
+        {% else %}
+        <span class="changemsg">No Change Message</span>
+        {% endif %}
+        <h3>{{ result.action_time|timesince }} 
+            {{ result.action_time|time:"H:i:s" }}</h3>
+        <span class="user"><a class="userlink" href="user/{{ result.user }}">{{ result.user }}</a></span>
+        <span class="objrepr"><a class="objlink" 
+                href="/admin/{{ result.get_admin_url }}">
+                {{ result.object_repr }}</a>
+    </li>
+</ul>
+{% endfor %}
+{% endblock %}
+

@@ -1,0 +1,23 @@
+{% extends "admin_sentry/index.html" %}
+{% load helpertags %}
+{% block subhead %} for user "{{ loguser }}"{% endblock subhead %}
+{% block main %}
+{% for result in results %}
+<ul class="entries" id="entry_list">
+    <li class="row">
+        <span class="action {{ result.action_flag|trans_actions }}">{{ result.action_flag|abbrev}}</span>
+        {% if result.change_message %}
+        <span class="changemsg">{{ result.change_message }}</span>
+        {% else %}
+        <span class="changemsg">No Change Message</span>
+        {% endif %}
+        <h3>{{ result.action_time|timesince }} 
+            {{ result.action_time|time:"H:i:s" }}</h3>
+        <span class="objrepr"><a class="objlink" 
+                href="/admin/{{ result.get_admin_url }}">
+                {{ result.object_repr }}</a>
+    </li>
+</ul>
+{% endfor %}
+{% endblock main %}
+
