@@ -1,6 +1,7 @@
 {% extends "admin_sentry/base.html" %}
 {% load i18n %}
 {% load helpertags %}
+{% load paging_extras %}
 
 {% block heading %}{% trans "Dashboard" %}{% endblock %}
 
@@ -23,7 +24,9 @@
 {% endblock %}
 
 {% block main %}
-{% for result in results %}
+{% paginate results from request as results per_page 10 %}
+{{ results.paging }}
+{% for result in results.objects %}
 <ul class="entries" id="entry_list">
     <li class="row">
         <span class="action {{ result.action_flag|trans_actions }}">{{ result.action_flag|abbrev}}</span>
@@ -41,5 +44,6 @@
     </li>
 </ul>
 {% endfor %}
+{{ results.paging }}
 {% endblock %}
 

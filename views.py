@@ -40,9 +40,9 @@ def by_changetype(request, action):
     qs = get_change_type(action)
     users = cache_users()
     return render_to_response('admin_sentry/changetype.html',
-                              {'results':qs,
-                               'userlist':users, 'changes':ACTIONS.iterkeys()},
-                              context_instance=RequestContext(request))
+            {'results':qs, 'action':action,
+             'userlist':users, 'changes':ACTIONS.iterkeys()},
+             context_instance=RequestContext(request))
 
 def get_change_type(action):
     cache_key = 'adminlog:change-%s' % action
@@ -51,7 +51,7 @@ def get_change_type(action):
 
     if not results:
         results = LogEntry.objects.filter(action_flag=a[action])
-        cache.set(cache_key, results, MINUTES_TO_CACHE * 5)
+        cache.set
 
     return results
 

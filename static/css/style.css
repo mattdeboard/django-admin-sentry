@@ -162,12 +162,12 @@ a.userlink:hover, a.objlink:hover {
 }
 /* User page style */
 
-#user_subhead {
+#subhead {
     margin: 0px 10px 5px 45px;
     font-variant: small-caps;
 }
 
-#user_subhead h1 {
+#subhead h1 {
     font-size: 3.3em;
 
 }
@@ -239,5 +239,26 @@ html ul.topnav li ul.subnav li a {
 }
 html ul.topnav li ul.subnav li a:hover { /*--Hover effect for subnav links--*/
 /*    background: #222 url(dropdown_linkbg.gif) no-repeat 10px center;*/
+}
+
+/* Paging style */
+
+ul.paging-endless {
+    float: right;
+    display: inline;
+    margin-right: 0;
+    list-style: none;
+}
+
+ul.paging-endless li {
+    float: right;
+    display: inline;
+    margin-right: 0;
+}
+
+li.paging-previous {
+}
+
+li.paging-next {
 }
 
