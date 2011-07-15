@@ -23,7 +23,8 @@ def index(request):
     filters = [UserFilter]
     return render_to_response('admin_sentry/index.html', 
                               {'results':qs, 'userlist': users,
-                               'changes':ACTIONS.iterkeys()},
+                               'changes':ACTIONS.iterkeys(),
+                               'filters':filters},
                               context_instance=RequestContext(request))
 
 @cache_page(300)
