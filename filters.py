@@ -4,6 +4,8 @@ from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 
+from admin_sentry.views import cache_users
+
 
 class Widget(object):
     def __init__(self, filter, request):
@@ -83,6 +85,12 @@ class BaseFilter(object):
 class UserFilter(BaseFilter):
     label = 'User'
     column = 'user'
+
+    def get_choices(self):
+        userdict = SortedDict()
+        for index,user in enumerate(cache_users()):
+            userdict.insert(index, user, -1)
+        return userdict
 
 
 class ObjectFilter(BaseFilter):

@@ -17,8 +17,10 @@ MINUTES_TO_CACHE = 60
 @cache_page(300)
 @login_required
 def index(request):
+    from admin_sentry.filters import UserFilter, ObjectFilter, ActionFilter
     qs = LogEntry.objects.all().order_by('-action_time')
     users = cache_users()
+    filters = [UserFilter]
     return render_to_response('admin_sentry/index.html', 
                               {'results':qs, 'userlist': users,
                                'changes':ACTIONS.iterkeys()},
