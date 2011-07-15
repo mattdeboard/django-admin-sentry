@@ -1,5 +1,52 @@
 from django.contrib.admin.models import LogEntry
+from django.conf import settings as django_settings
+from django.utils.datastructures import SortedDict
+from django.utils.safestring import mark_safe
+from django.utils.html import escape
 
+
+class Widget(object):
+    def __init__(self, filter, request):
+        self.filter = filter
+        self.request = request
+
+    def get_query_string(self):
+        return self.filter.get_query_string()
+
+
+class TextWidget(Widget):
+    def render(self, value, placeholder='', **kwargs):
+        return mark_safe('<div class="filter-text"><p class="textfield"><input'
+                         ' type="text" name="%(name)s" value="%(value)s" place'
+                         'holder="%(placeholder)s"/></p><p class="submit"><inp'
+                         'ut type="submit" class="search-submit" /></p></div>' %
+                         dict(name=self.filter.get_query_param(),
+                              value=escape(value),
+                              placeholder=escape(placeholder or 'enter %s' % 
+                                                 self.filter.label.lower()),
+                              ))
+
+
+class ChoiceWidget(Widget):
+    def render(self, value, **kwargs):
+        choices = self.filter.get_choices()
+        query_string = self.get_query_string()
+        column = self.filter.get_query_param()
+
+        output = ['<ul class="%s-list filter-list" rel="%s">' % (self.filter.column,
+                                                                 column)]
+        output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)s&a'
+                      'mp;%(column)s=%(key)s">%(value)s</a></li>' % dict(
+                        active=value == key and ' class="active"' or '',
+                        column=column,
+                        key=key,
+                        value=val,
+                        query_string=query_string,
+                        ))
+        output.append('</ul>')
+        return mark_safe('\n'.join(output))
+                                                                  
+                      
 
 class BaseFilter(object):
     label = ''
