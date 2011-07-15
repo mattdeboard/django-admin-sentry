@@ -34,6 +34,27 @@ def by_user(request, loguser):
                                                          'userlist':users},
                               context_instance=RequestContext(request))
 
+@cache_page(300)
+@login_required
+def by_changetype(request, action):
+    qs = get_change_type(action)
+    users = cache_users()
+    return render_to_response('admin_sentry/changetype.html',
+                              {'results':qs,
+                               'userlist':users, 'changes':ACTIONS.iterkeys()},
+                              context_instance=RequestContext(request))
+
+def get_change_type(action):
+    cache_key = 'adminlog:change-%s' % action
+    results = cache.get(cache_key)
+    a = {'addition': 1, 'update': 2, 'deletion': 3}
+
+    if not results:
+        results = LogEntry.objects.filter(action_flag=a[action])
+        cache.set(cache_key, results, MINUTES_TO_CACHE * 5)
+
+    return results
+
 def get_user_logs(user):
     cache_key = 'adminlog:%s-logs' % user
     results = cache.get(cache_key)

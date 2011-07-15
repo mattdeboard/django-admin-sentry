@@ -163,11 +163,12 @@ a.userlink:hover, a.objlink:hover {
 /* User page style */
 
 #user_subhead {
-    margin: 20px 10px 10px 10px;
+    margin: 0px 10px 5px 45px;
     font-variant: small-caps;
 }
 
-.user_subhead h2 {
+#user_subhead h1 {
+    font-size: 3.3em;
 
 }
 
