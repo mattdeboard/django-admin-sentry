@@ -54,6 +54,8 @@ class BaseFilter(object):
     label = ''
     column = ''
     default = ''
+    widget = ChoiceWidget
+    show_label = True
 
     def __init__(self, request):
         self.request = request
@@ -73,6 +75,8 @@ class BaseFilter(object):
         if 'p' in query_dict:
             # Remove any pagination info in querystring
             del query_dict['p']
+        if column in query_dict:
+            del query_dict[column]
         return '?' + query_dict.urlencode()
 
     def get_choices(self):
