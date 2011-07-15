@@ -3,11 +3,13 @@ html * {
     margin: 0;
 }
 
-body * * {
+body {
     font-family: "Lucida Grande", "Lucida Sans", sans-serif;
-i}
+    position: relative;
+}
 
 h1 {
+    font-family: "Oswald", sans-serif !important;
     font-variant: small-caps;
 }
 
@@ -27,6 +29,16 @@ h1 a:hover {
     width: 950px;
     margin: auto;
 }
+
+#header .container {
+    font-family: "Oswald", sans-serif;
+    font-variant: small-caps;
+}
+
+/*#header .container h2 {
+    position: absolute;
+    margin: auto;
+}*/
 
 #navbar {
     text-align: center;
@@ -152,6 +164,19 @@ a.userlink:hover, a.objlink:hover {
     background: #ff5400;
     background:-moz-linear-gradient(center top , #F16C7C, #BF404F) repeat scroll 0 0 transparent;
     background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F16C7C), to(#BF404F));
+}
+/* User page style */
+
+.user_subhead {
+    margin: 20px 10px 10px 10px;
+    font-variant: small-caps;
+}
+
+.user_subhead h2 {
+
+}
+
+span.username {
 }
 
 /* Drop-down menu style */

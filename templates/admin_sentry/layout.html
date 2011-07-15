@@ -4,7 +4,8 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <meta name="robots" content="NONE,NOARCHIVE">
-        <link href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz:light,regular&amp;subset=latin" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Oswald&v2' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Oswald&v2" rel="stylesheet" type="text/css">
         <link href="{% url as-media 'css/style.css' %}" rel="stylesheet" type="text/css">
        <script type="text/javascript"
            src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
@@ -17,15 +18,15 @@
         {% block body %}
         <div id="header">
             <div class="container">
-                <h1><a href="{% url admin_sentry %}">Admin Sentry</a></h1>
-                <h2>{% block heading %}Dashboard{% endblock %}</h2>
+                <h1 id="app_title"><a href="{% url admin_sentry %}">Admin Sentry</a></h1>
+                <h2 id="dashboard">{% block heading %}Dashboard{% endblock %}</h2>
                 {% block search %}
-                    <form id="search" method="GET" action="/">
+                <!--    <form id="search" method="GET" action="/">
                         <input type="hidden" name="sort" value="{% if sort %}{{ sort }}{% endif %}"/>
                         <input type="text" name="q" value="{% if query %}{{
                         query }}{% endif %}" placeholder="{% if has_search %}search query or message id{% else %}username{% endif %}"/>
                         <button type="submit">Go</button>
-                    </form>
+                    </form>-->
                 {% endblock %}
             </div><!-- .container -->
             <div id="navbar">
