@@ -1,4 +1,4 @@
-
+import sys
 
 from django.contrib import messages
 from django.contrib.admin.models import LogEntry
@@ -10,17 +10,20 @@ from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
 from admin_sentry import settings
+from admin_sentry.helpers import *
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
-MINUTES_TO_CACHE = 60
 
-@cache_page(300)
+#@cache_page(300)
 @login_required
 def index(request):
-    from admin_sentry.filters import UserFilter, ObjectFilter, ActionFilter
+    filters = []
+    #print >> sys.stderr, get_filters()
+    for filter_ in get_filters():
+        filters.append(filter_(request))
+
     qs = LogEntry.objects.all().order_by('-action_time')
     users = cache_users()
-    filters = [UserFilter]
     return render_to_response('admin_sentry/index.html', 
                               {'results':qs, 'userlist': users,
                                'changes':ACTIONS.iterkeys(),
@@ -47,33 +50,3 @@ def by_changetype(request, action):
              'userlist':users, 'changes':ACTIONS.iterkeys()},
              context_instance=RequestContext(request))
 
-def get_change_type(action):
-    cache_key = 'adminlog:change-%s' % action
-    results = cache.get(cache_key)
-    a = {'addition': 1, 'update': 2, 'deletion': 3}
-
-    if not results:
-        results = LogEntry.objects.filter(action_flag=a[action])
-        cache.set
-
-    return results
-
-def get_user_logs(user):
-    cache_key = 'adminlog:%s-logs' % user
-    results = cache.get(cache_key)
-
-    if not results:
-        results = LogEntry.objects.filter(user__username=user)
-        cache.set(cache_key, results, MINUTES_TO_CACHE * 5)
-
-    return results
-
-def cache_users():
-    cache_key = 'adminlog:allusers'
-    users = cache.get(cache_key)
-
-    if not users:
-        users = User.objects.all()
-        cache.set(cache_key, users, MINUTES_TO_CACHE * 60)
-
-    return users

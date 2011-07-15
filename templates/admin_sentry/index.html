@@ -14,7 +14,7 @@
     {% for filter in filters %}
         <div class="sidebar-module sidebar-module-{{ filter.column }}">
             {% if filter.show_label %}
-                <h2>{% trans filter.label %}</h2>
+            <h2>{% trans filter.label %}</h2>
             {% endif %}
             <form method="get" action="{{ filter.get_query_string|safe }}">
                 {{ filter.render }}

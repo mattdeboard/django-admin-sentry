@@ -4,7 +4,7 @@ from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 
-from admin_sentry.views import cache_users
+from admin_sentry.helpers import cache_users
 
 
 class Widget(object):
@@ -37,8 +37,18 @@ class ChoiceWidget(Widget):
 
         output = ['<ul class="%s-list filter-list" rel="%s">' % (self.filter.column,
                                                                  column)]
-        output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)s&a'
-                      'mp;%(column)s=%(key)s">%(value)s</a></li>' % dict(
+
+        output.append('<li%(active)s><a href="%(query_string)s&amp;%(column)s=">Any %(label)s</a></li>' % dict(
+            active=not value and ' class="active"' or '',
+            query_string=query_string,
+            label=self.filter.label,
+            column=column,
+        ))
+
+        for key, val in choices.iteritems():
+            key = unicode(key)
+            output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)s&a'
+                          'mp;%(column)s=%(key)s">%(value)s</a></li>' % dict(
                         active=value == key and ' class="active"' or '',
                         column=column,
                         key=key,
@@ -85,15 +95,21 @@ class BaseFilter(object):
                 FilterValue.objects.filter(key=self.column).values_list('value',
                     flat=True).order_by('value'))
 
+    def get_widget(self):
+        return self.widget(self, self.request)
+
+    def render(self):
+        widget = self.get_widget()
+        return widget.render(self.get_value())
+
 
 class UserFilter(BaseFilter):
     label = 'User'
     column = 'user'
-
+    
     def get_choices(self):
-        userdict = SortedDict()
-        for index,user in enumerate(cache_users()):
-            userdict.insert(index, user, -1)
+        userdict = SortedDict([(index, user) for index,user in
+            enumerate(cache_users())])
         return userdict
 
 
