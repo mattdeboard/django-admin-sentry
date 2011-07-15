@@ -2,9 +2,9 @@
 {% load helpertags %}
 {% block subhead %} for user "{{ loguser }}"{% endblock subhead %}
 {% block main %}
-<div class="user_subhead">
-    <h2>Logs for <span class="username">{{ loguser }}</span></h2>
-</div><!-- .user_subhead -->
+<div id="user_subhead">
+    <h1>Logs for <span class="username">{{ loguser }}</span></h1>
+</div><!-- #user_subhead -->
 {% for result in results %}
 <ul class="entries" id="entry_list">
     <li class="row">

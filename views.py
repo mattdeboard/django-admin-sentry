@@ -7,12 +7,14 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.decorators.cache import cache_page
 
 from admin_sentry import settings
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 MINUTES_TO_CACHE = 60
 
+@cache_page(300)
 @login_required
 def index(request):
     qs = LogEntry.objects.all().order_by('-action_time')
@@ -22,6 +24,7 @@ def index(request):
                                'changes':ACTIONS.iterkeys()},
                               context_instance=RequestContext(request))
 
+@cache_page(300)
 @login_required
 def by_user(request, loguser):
     qs = get_user_logs(loguser)
