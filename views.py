@@ -31,14 +31,3 @@ def index(request):
                                'changes':ACTIONS.iterkeys(),
                                'filters':filters},
                               context_instance=RequestContext(request))
-
-@cache_page(300)
-@login_required
-def by_changetype(request, action):
-    qs = get_change_type(action)
-    users = cache_users()
-    return render_to_response('admin_sentry/changetype.html',
-            {'results':qs, 'action':action,
-             'userlist':users, 'changes':ACTIONS.iterkeys()},
-             context_instance=RequestContext(request))
-
