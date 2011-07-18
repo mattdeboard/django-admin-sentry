@@ -26,13 +26,21 @@ h1 a:hover {
 }
 
 .container {
-    width: 950px;
+    width: 1050px;
     margin: auto;
 }
 
 #header .container {
     font-family: "Oswald", sans-serif;
     font-variant: small-caps;
+}
+
+#sidebar {
+    float: right;
+    width: 300px;
+    margin: 0em 2em 2em 1.5em;
+    background: inherit;
+    overflow: hidden;
 }
 
 #navbar {
@@ -47,14 +55,6 @@ h1 a:hover {
     background: -moz-linear-gradient(top,  #555,  #222); /* for firefox 3.6+ */
     height: 25px;
 }
-
-/*#filters {
-    text-align: center;
-    text-transform: lowercase;
-    width: 950px;
-    margin: auto;
-    height: 24px;
-}*/
 
 h4 {
     font-variant: small-caps;
