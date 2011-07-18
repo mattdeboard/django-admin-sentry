@@ -34,6 +34,8 @@ def get_action_logs(queryset, action):
     results = cache.get(cache_key)
 
     if not results:
+        # `action` comes in as a string from request.GET, so must force
+        # to int.
         results = queryset.filter(action_flag=int(action))
         cache.set
 
@@ -44,7 +46,9 @@ def get_user_logs(queryset, user):
     results = cache.get(cache_key)
 
     if not results:
-        results = queryset.filter(user__username=user)
+        # `user` comes in as a string from request.GET, so must force to
+        # int.
+        results = queryset.filter(user=int(user))
         cache.set(cache_key, results, MINUTES_TO_CACHE * 5)
 
     return results
