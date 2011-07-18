@@ -32,10 +32,9 @@ def get_filters():
 def get_action_logs(queryset, action):
     cache_key = 'adminlog:action-%s' % action
     results = cache.get(cache_key)
-    a = {'addition': 1, 'update': 2, 'deletion': 3}
 
     if not results:
-        results = queryset.filter(action_flag=a[action])
+        results = queryset.filter(action_flag=int(action))
         cache.set
 
     return results
