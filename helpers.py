@@ -84,12 +84,16 @@ def get_old_info(sender, **kwargs):
     '''
     instance = kwargs['instance']
     content_type = ContentType.objects.get_for_model(instance)
-
     if content_type.model == 'changelog':
         return
-        
-    changelog = ChangeLog(ref_id=instance.id, model_class=str(content_type))
-    changelog.save()
+
+    try:
+        changelog = ChangeLog.objects.filter(model_class=str(content_type)).\
+                    get(ref_id=instance.id)
+    except:
+        changelog = ChangeLog(ref_id=instance.id, model_class=str(content_type))
+        changelog.save()
+    
     for field in instance._meta.fields:
         changelog.prev_state[field.name] = field.value_from_object(instance)
     changelog.save()
