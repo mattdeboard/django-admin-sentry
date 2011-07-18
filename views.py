@@ -21,8 +21,10 @@ def index(request):
     #print >> sys.stderr, get_filters()
     for filter_ in get_filters():
         filters.append(filter_(request))
-
-    qs = LogEntry.objects.all().order_by('-action_time')
+    if request.GET.get("user"):
+        qs = LogEntry.objects.filter(user=request.GET["user"])
+    else:
+        qs = LogEntry.objects.all().order_by('-action_time')
     users = cache_users()
     return render_to_response('admin_sentry/index.html', 
                               {'results':qs, 'userlist': users,
