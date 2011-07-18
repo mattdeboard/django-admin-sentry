@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.models import User
 from django.core.cache import cache
@@ -7,6 +9,7 @@ from admin_sentry import conf
 
 MINUTES_TO_CACHE = 60
 _FILTER_CACHE = None
+
 def get_filters():
     global _FILTER_CACHE
 
@@ -18,11 +21,13 @@ def get_filters():
                 module = __import__(module_name, {}, {}, class_name)
                 filter_ = getattr(module, class_name)
             except Exception:
+                logger = logging.getLogger('as_errors')
+                logger.exception("Unable to import %s" % (filter_,))
                 continue
             filters.append(filter_)
         _FILTER_CACHE = filters
-        for f in _FILTER_CACHE:
-            yield f
+    for f in _FILTER_CACHE:
+        yield f
 
 def get_change_type(action):
     cache_key = 'adminlog:change-%s' % action
