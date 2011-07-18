@@ -2,7 +2,7 @@ from django import template
 
 register = template.Library()
 
-actions = {1: 'addition', 2: 'update', 3: 'deletion'}
+actions = {1: 'addition', 2: 'change', 3: 'deletion'}
 
 @register.filter
 def trans_actions(action):

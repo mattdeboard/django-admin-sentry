@@ -247,7 +247,7 @@ a.userlink:hover, a.objlink:hover {
     background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#58d748), to(#118c00));
 }
 
-.action.update {
+.action.change {
     background: #ff7800;
     background:-moz-linear-gradient(center top , #efd57c, #e0ae00) repeat scroll 0 0 transparent;
     background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#efd57c), to(#e0ae00));
@@ -410,8 +410,8 @@ html ul.topnav li ul.subnav li a:hover { /*--Hover effect for subnav links--*/
 
 .paging-endless li a:hover {
     color: white;
-    background: -webkit-gradient(linear, left top, left bottom, from(#00d3c1), to(#00675e));
-    background:-moz-linear-gradient(center top, #00d3c1 0pt, #00675e 100%) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#89d151), to(#229b44));
+    background:-moz-linear-gradient(center top, #89d151 0pt, #229b44 100%) repeat scroll 0 0 transparent;
     font-weight: bold;
     font-variant: small-caps;
 }
