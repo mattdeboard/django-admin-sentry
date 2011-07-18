@@ -14,7 +14,7 @@ from admin_sentry.helpers import *
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 
-#@cache_page(300)
+@cache_page(300)
 @login_required
 def index(request):
     filters = []
@@ -30,7 +30,7 @@ def index(request):
                                'filters':filters},
                               context_instance=RequestContext(request))
 
-#@cache_page(300)
+@cache_page(300)
 @login_required
 def by_user(request, loguser):
     qs = get_user_logs(loguser)
@@ -40,7 +40,7 @@ def by_user(request, loguser):
                                                          'userlist':users},
                               context_instance=RequestContext(request))
 
-#@cache_page(300)
+@cache_page(300)
 @login_required
 def by_changetype(request, action):
     qs = get_change_type(action)
