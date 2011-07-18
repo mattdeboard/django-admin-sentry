@@ -18,15 +18,16 @@ ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 @login_required
 def index(request):
     filters = []
-    #print >> sys.stderr, get_filters()
     for filter_ in get_filters():
         filters.append(filter_(request))
+    qs = LogEntry.objects.all().order_by("-action_time")
+    
     if request.GET.get("user"):
-        qs = LogEntry.objects.filter(user=request.GET["user"])
-    elif request.GET.get("action"):
-        qs = LogEntry.objects.filter(action_flag=request.GET["action"])
-    else:
-        qs = LogEntry.objects.all().order_by('-action_time')
+        qs = qs.filter(user=request.GET["user"])
+
+    if request.GET.get("action"):
+        qs = qs.filter(action_flag=request.GET["action"])
+
     users = cache_users()
     return render_to_response('admin_sentry/index.html', 
                               {'results':qs, 'userlist': users,
