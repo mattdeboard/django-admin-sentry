@@ -35,26 +35,25 @@ class ChoiceWidget(Widget):
         query_string = self.get_query_string()
         column = self.filter.get_query_param()
 
-        output = ['<ul class="%s-list filter-list" rel="%s">' % (self.filter.column,
-                                                                 column)]
+        output = ['<ul class="%s-list filter-list" rel="%s">' %
+                  (self.filter.column, column)]
 
-        output.append('<li%(active)s><a href="%(query_string)s&amp;%(column)s=">Any %(label)s</a></li>' % dict(
-            active=not value and ' class="active"' or '',
-            query_string=query_string,
-            label=self.filter.label,
-            column=column,
-        ))
+        output.append('<li%(active)s><a href="%(query_string)s&amp;%(column)s="'
+                      '>Any %(label)s</a></li>' %
+                      dict(active=not value and ' class="active"' or '',
+                           query_string=query_string,
+                           label=self.filter.label,
+                           column=column,))
 
         for key, val in choices.iteritems():
             key = unicode(key)
-            output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)s&a'
-                          'mp;%(column)s=%(key)s">%(value)s</a></li>' % dict(
-                        active=value == key and ' class="active"' or '',
-                        column=column,
-                        key=key,
-                        value=val,
-                        query_string=query_string,
-                        ))
+            output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)'
+                          's&amp;%(column)s=%(key)s">%(value)s</a></li>' %
+                          dict(active=value == key and ' class="active"' or '',
+                               column=column,
+                               key=key,
+                               value=val,
+                               query_string=query_string,))
         output.append('</ul>')
         return mark_safe('\n'.join(output))
                                                                   
@@ -119,9 +118,10 @@ class ObjectFilter(BaseFilter):
 
 class ActionFilter(BaseFilter):
     label = 'Action'
-    column = 'action_flag'
+    column = 'action'
 
-    def get_action(self, instance):
-        actions = {0: 'Addition', 1: 'Change', 2: 'Deletion'}
-        return actions[instance.action_flag]
+    def get_choices(self, instance):
+        actions = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
+        actiondict = SortedDict([(i, actions[i]) for i in actions])
+        return actiondict
 
