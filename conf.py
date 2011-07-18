@@ -6,6 +6,7 @@ LOGIN_URL = '/admin'
 
 FILTERS = (
         'admin_sentry.filters.UserFilter',
+        'admin_sentry.filters.ActionFilter',
 )       
 
 TEMPLATE_DIRS = (
