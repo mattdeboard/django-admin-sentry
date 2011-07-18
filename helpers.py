@@ -1,9 +1,15 @@
+import copy
+import datetime
+import hashlib
 import logging
 
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from django.contrib.contenttypes.models import ContentType
+from django.db.models.signals import pre_save
 
+import admin_sentry.diff_match_patch as diff
 from admin_sentry import conf
 
 
@@ -62,3 +68,58 @@ def cache_users():
         cache.set(cache_key, users, MINUTES_TO_CACHE * 60)
 
     return users
+
+def get_diff(sender, **kwargs):
+    '''
+    Get diff of two blocks of text and return a pretty HTML version.
+
+    Relies on Google's diff_match_patch script.
+    http://code.google.com/p/google-diff-match-patch
+    '''
+    
+    d = diff.diff_main(old, new)
+    return d.diff_prettyHtml(d)
+
+def get_old_info(sender, **kwargs):
+    '''
+    Takes a model instance and 
+    '''
+    instance = kwargs['instance']
+    content_type = ContentType.objects.get_for_model(instance)
+
+    if content_type.model == 'changelog':
+        return
+        
+    try:
+        changelog = ChangeLog.objects.filter(content_type=content_type).\
+                    get(ref_id=instance.id)
+    except:
+        changelog = ChangeLog(content_type=content_type, ref_id=instance.id)
+        
+    for field in instance._meta.fields:
+        changelog.prev_state[field.name] = field.value_from_object(instance)
+
+    changelog.prev_state = old_attrs
+    changelog.save()
+    
+#    cache_key = "lastattrs:%s:%s" % (content_type, instance.id)
+#    cache.set(cache_key, old_attrs, 300)
+
+def get_new_info(sender, **kwargs):
+    instance = kwargs['instance']
+    content_type = ContentType.objects.get_for_model(instance)
+    if content_type.model == 'changelog':
+        return
+
+    changelog = ChangeLog.objects.filter(content_type=content_type).\
+                get(ref_id=instance.id)
+
+    for field in instance._meta.fields:
+        changelog.diff_pairs.append(get_diff(field.value_from_object(instance),
+                                             changelog.prev_state[field.name]))
+
+    changelog.save()
+    
+    
+pre_save.connect(get_old_info)
+post_save.connect(get_new_info)
