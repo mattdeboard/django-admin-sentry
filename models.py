@@ -7,12 +7,24 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import smart_unicode
 from django.utils.safestring import mark_safe
 
+from directseo.seo.models import Configuration
+
+import admin_sentry.diff_match_patch as diff
+
 
 class ChangeLog(models.Model):
     '''
     '''
-    prev_state = {}
-    diff_pairs = []
-    def __init__(self, content_type=None, ref_id=None):
+    ref_id = models.IntegerField()
+    model_class = models.CharField(max_length=255)
+    
+    def set_content_type(self, content_type=None):
         self.content_type = content_type
-        self.ref_id = ref_id
+
+    def get_content_type(self):
+        return self.content_type
+        
+    def get_html_diff(self):
+        return 
+        
+        
