@@ -29,23 +29,23 @@ def get_filters():
     for f in _FILTER_CACHE:
         yield f
 
-def get_change_type(action):
-    cache_key = 'adminlog:change-%s' % action
+def get_action_logs(queryset, action):
+    cache_key = 'adminlog:action-%s' % action
     results = cache.get(cache_key)
     a = {'addition': 1, 'update': 2, 'deletion': 3}
 
     if not results:
-        results = LogEntry.objects.filter(action_flag=a[action])
+        results = queryset.filter(action_flag=a[action])
         cache.set
 
     return results
 
-def get_user_logs(user):
+def get_user_logs(queryset, user):
     cache_key = 'adminlog:%s-logs' % user
     results = cache.get(cache_key)
 
     if not results:
-        results = LogEntry.objects.filter(user__username=user)
+        results = queryset.filter(user__username=user)
         cache.set(cache_key, results, MINUTES_TO_CACHE * 5)
 
     return results

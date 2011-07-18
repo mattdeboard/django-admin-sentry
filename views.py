@@ -23,10 +23,10 @@ def index(request):
     qs = LogEntry.objects.all().order_by("-action_time")
     
     if request.GET.get("user"):
-        qs = qs.filter(user=request.GET["user"])
+        qs = get_user_logs(qs, request.GET["user"])
 
     if request.GET.get("action"):
-        qs = qs.filter(action_flag=request.GET["action"])
+        qs = get_action_logs(qs, request.GET["action"])
 
     users = cache_users()
     return render_to_response('admin_sentry/index.html', 
