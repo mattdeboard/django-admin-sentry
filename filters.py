@@ -120,8 +120,6 @@ class ActionFilter(BaseFilter):
     label = 'Action'
     column = 'action'
 
-    def get_choices(self, instance):
-        actions = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
-        actiondict = SortedDict([(i, actions[i]) for i in actions])
-        return actiondict
+    def get_choices(self):
+        return {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 
