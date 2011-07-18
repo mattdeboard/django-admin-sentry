@@ -23,6 +23,8 @@ def index(request):
         filters.append(filter_(request))
     if request.GET.get("user"):
         qs = LogEntry.objects.filter(user=request.GET["user"])
+    elif request.GET.get("action"):
+        qs = LogEntry.objects.filter(action_flag=request.GET["action"])
     else:
         qs = LogEntry.objects.all().order_by('-action_time')
     users = cache_users()
