@@ -36,6 +36,8 @@ h1 a:hover {
     font-variant: small-caps;
 }
 
+/* Sidebar style */
+
 #sidebar {
     float: right;
     width: 300px;
@@ -123,6 +125,7 @@ h1 a:hover {
 dl.flat {
     margin-bottom: 1em;
 }
+/* End Sidebar style */
 
 #body {
     background: white;
@@ -254,20 +257,6 @@ a.userlink:hover, a.objlink:hover {
     background: #ff5400;
     background:-moz-linear-gradient(center top , #F16C7C, #BF404F) repeat scroll 0 0 transparent;
     background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F16C7C), to(#BF404F));
-}
-/* User page style */
-
-#subhead {
-    margin: 0px 10px 5px 45px;
-    font-variant: small-caps;
-}
-
-#subhead h1 {
-    font-size: 3.3em;
-
-}
-
-span.username {
 }
 
 /* Drop-down menu style */

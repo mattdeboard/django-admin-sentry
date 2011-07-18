@@ -28,6 +28,7 @@
 <div class="paging-wrap">
 {{ results.paging }}
 </div><!-- .paging-wrap -->
+{% if results.objects %}
 {% for result in results.objects %}
 <ul class="entries" id="entry_list">
     <li class="row">
@@ -46,6 +47,11 @@
     </li>
 </ul>
 {% endfor %}
+{% else %}
+<div id="nil_results">
+  <h1>No Results</h1>
+</div>
+{% endif %}
 <div class="paging-bottom">
     {{ results.paging }}
 </div>
