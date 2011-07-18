@@ -108,8 +108,7 @@ class UserFilter(BaseFilter):
     column = 'user'
     
     def get_choices(self):
-        userdict = SortedDict([(index, user) for index,user in
-            enumerate(cache_users())])
+        userdict = SortedDict([(user.id, user.username) for user in cache_users()])
         return userdict
 
 
