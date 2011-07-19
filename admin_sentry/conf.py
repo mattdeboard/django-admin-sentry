@@ -16,3 +16,4 @@ TEMPLATE_LOADERS = (
         'django.template.loaders.app_directories.Loader',
 )
 
+USER_PROFILE_URL = '/admin/auth/user'
