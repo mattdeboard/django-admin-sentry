@@ -1,5 +1,6 @@
-{% extends 'admin_sentry/layout.html' %}
+{% extends 'admin_sentry/base.html' %}
 {% load i18n %}
+{% block main %}
 <div id="login_form">
   {% if messages %}
   <ul class="messages">
@@ -15,5 +16,6 @@
     {% endfor %}
   </form>
  </div><!-- #login_form -->
+{% endblock main %}
     
   
