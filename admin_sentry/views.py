@@ -28,3 +28,26 @@ def index(request):
                                'changes':ACTIONS.iterkeys(),
                                'filters':filters},
                               context_instance=RequestContext(request))
+
+def as_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_superuser:
+                login(request, user)
+                return redirect('/admin_sentry')
+            else:
+                messages.error(request, "You do not have proper permissions to "
+                               "use this application. Ensure you are logging in"
+                               " using your application's admin user/pass.")
+            else:
+                messages.error(request, "Invalid username or password. Ensure y"
+                               "ou are logging in using your application's admi"
+                               "n user/pass.")
+
+    return render_to_response('admin_sentry/login.html')
+
+
+        
