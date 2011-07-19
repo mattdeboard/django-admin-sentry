@@ -12,7 +12,7 @@ Installation
 
 First, install the package:
 
-`$ pip install git+git://github.com/mattdeboard/django-admin-sentry.git`
+  `$ pip install git+git://github.com/mattdeboard/django-admin-sentry.git`
 
 Then, add `admin_sentry` to your package's INSTALLED_APPS setting.
 
