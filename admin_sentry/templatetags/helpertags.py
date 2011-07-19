@@ -1,5 +1,8 @@
 from django import template
 
+from admin_sentry.conf import USER_PROFILE_URL
+from admin_sentry.helpers import cache_users
+
 register = template.Library()
 
 actions = {1: 'addition', 2: 'change', 3: 'deletion'}
@@ -35,3 +38,14 @@ def timesince(value):
     if value == '1 day':
         return 'Yesterday'
     return value + ' ago'
+
+@register.filter
+def get_user_admin_url(value):
+    '''
+    Given a username (`value`), return a string containing an absolute
+    path to the user's admin profile.
+    '''
+    users = cache_users()
+    user = users.get(username=value)
+    return "%s/%s" % (USER_PROFILE_URL, str(user.id))
+    
