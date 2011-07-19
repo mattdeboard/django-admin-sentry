@@ -5,6 +5,9 @@
 {% endblock extra_css %}
 {% block main %}
 <div id="login_form">
+<div id="notice">
+  <h3>You must be logged in as a superuser to proceed.</h3>
+</div><!-- #notice -->
   {% if messages %}
   <ul class="messages">
     {% for message in messages %}
