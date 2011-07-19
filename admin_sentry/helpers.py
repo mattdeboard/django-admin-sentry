@@ -1,13 +1,7 @@
-import copy
-import datetime
-import hashlib
 import logging
 
-from django.contrib.admin.models import LogEntry
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.contrib.contenttypes.models import ContentType
-from django.db.models.signals import pre_save, post_save
 
 from admin_sentry import conf
 

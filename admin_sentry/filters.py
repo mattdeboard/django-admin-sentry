@@ -1,5 +1,3 @@
-from django.contrib.admin.models import LogEntry
-from django.conf import settings as django_settings
 from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape

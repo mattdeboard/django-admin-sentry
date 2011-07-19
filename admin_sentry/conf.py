@@ -1,5 +1,3 @@
-import os
-
 USE_L10N = True
 
 LOGIN_URL = '/admin'

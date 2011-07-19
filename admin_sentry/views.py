@@ -1,15 +1,9 @@
-import sys
-
-from django.contrib import messages
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.core.cache import cache
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
-from admin_sentry import settings
 from admin_sentry.helpers import *
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
