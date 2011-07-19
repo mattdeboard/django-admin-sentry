@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
 from admin_sentry.helpers import *
+from admin_sentry.forms import ASLogin
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 
@@ -30,6 +31,7 @@ def index(request):
                               context_instance=RequestContext(request))
 
 def as_login(request):
+    form = ASLogin()
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -47,7 +49,8 @@ def as_login(request):
                                "ou are logging in using your application's admi"
                                "n user/pass.")
 
-    return render_to_response('admin_sentry/login.html')
+    return render_to_response('admin_sentry/login.html', {'form': form},
+                              context_instance=RequestContext(request)))
 
 
         
