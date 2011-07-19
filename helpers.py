@@ -11,7 +11,6 @@ from django.db.models.signals import pre_save, post_save
 
 import admin_sentry.diff_match_patch as diff
 from admin_sentry import conf
-from admin_sentry.models import ChangeLog
 
 
 MINUTES_TO_CACHE = 60
