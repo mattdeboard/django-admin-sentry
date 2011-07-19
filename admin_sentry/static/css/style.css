@@ -36,6 +36,17 @@ h1 a:hover {
     font-variant: small-caps;
 }
 
+.submenu a {
+    color: white;
+    font-family: "Oswald", sans-serif;
+    font-variant: small-caps;
+    text-decoration: none;
+}
+
+.submenu a:hover {
+    color: #ddd;
+}
+
 /* Sidebar style */
 
 #sidebar {
@@ -351,4 +362,5 @@ a.userlink:hover, a.objlink:hover {
     font-variant: small-caps;
 }
 
+/* End paging style */
 
