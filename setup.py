@@ -14,12 +14,11 @@ except ImportError:
 
 setup(
     name='django-admin-sentry',
-    version='0.1',
+    version='0.2',
     author='Matt DeBoard',
     author_email='mattdeboard@gmail.com',
     include_package_data=True,
     packages=find_packages(),
-    install_required=install_requires,
 )
 
 

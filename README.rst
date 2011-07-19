@@ -32,6 +32,4 @@ Finally, add the following lines to your project's `urls.py`:
 Logging in
 -----------
 
-To access admin_sentry, you must be logged in to your project's admin panel. Once you are logged in, navigate to `yourdomain.com/admin_sentry`. You'll then see the interface.
-
-This admittedly convoluted process will likely be changed in the near future, allowing you to log directly in to admin_sentry to access these logs.
+Navigate to `yourdomain.com/admin_sentry`. If you are not logged into your app's admin panel, you'll be prompted to log in. Once you do, you'll then see the interface.

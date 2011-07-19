@@ -1,0 +1,7 @@
+0.2
+
+* Superusers can now log into and out of admin_sentry (and their app's admin interface) via /admin_sentry/[login|logout].
+
+0.1
+
+* Initial release
