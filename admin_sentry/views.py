@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.admin.models import LogEntry
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
@@ -54,5 +54,7 @@ def as_login(request):
     return render_to_response('admin_sentry/login.html', {'form': form},
                               context_instance=RequestContext(request))
 
-
+def as_logout(request):
+    logout(request)
+    return render_to_response("admin_sentry/logout.html")
         

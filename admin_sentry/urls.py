@@ -12,4 +12,5 @@ urlpatterns = patterns('',
     url(r'^_static/(?P<path>.*)$', 'django.views.static.serve', 
         {'document_root':STATIC_ROOT},  name="as-media"),
     url(r'^login', views.as_login, name='as-login'),
+    url(r'^logout', views.as_logout, name='as-logout'),
 )

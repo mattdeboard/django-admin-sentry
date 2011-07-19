@@ -26,6 +26,9 @@
                 {% endblock %}
             </div><!-- .container -->
             <div id="navbar">
+              {% block submenu %}
+              <span class="submenu"><a href="{% url as-logout %}">Logout</a></span>
+              {% endblock submenu %}
             </div><!-- #navbar -->
             {% comment %}
                 <div id="filters">

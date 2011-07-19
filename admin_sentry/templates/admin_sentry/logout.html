@@ -1,0 +1,7 @@
+{% extends 'admin_sentry/login.html' %}
+{% block main %}
+<div class="logout notice">
+  <h3>You have successfully logged out.</h3>
+  <p><a href="{% url as-login %}">Click here to log back in.</a></p>
+</div>
+{% endblock %}

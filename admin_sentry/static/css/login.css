@@ -39,10 +39,28 @@
     -webkit-border-radius: 5px 5px 0 0;*/
 }
 
-#notice {
+.notice {
     text-align: center;
     width: 100%;
     font-family: "Oswald", sans-serif;
+}
+
+.notice h3 {
     font-variant: small-caps;
 }
 
+.logout.notice p {
+    font-size: 1em;
+}
+
+.logout a {
+    text-decoration: none;
+    color: #006ca3;
+    font-variant: none;
+}
+
+.logout a:hover {
+    color: #0191d9;
+}
+    
+    

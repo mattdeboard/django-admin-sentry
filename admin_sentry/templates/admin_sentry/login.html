@@ -3,9 +3,11 @@
 {% block extra_css %}
 <link href="{% url as-media 'css/login.css' %}" rel="stylesheet" type="text/css">
 {% endblock extra_css %}
+{% block submenu %}
+{% endblock submenu %}
 {% block main %}
 <div id="login_form">
-<div id="notice">
+<div class="login notice">
   <h3>You must be logged in as a superuser to proceed.</h3>
 </div><!-- #notice -->
   {% if messages %}
