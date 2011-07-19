@@ -27,7 +27,11 @@
             </div><!-- .container -->
             <div id="navbar">
               {% block submenu %}
-              <span class="submenu"><a href="{% url as-logout %}">Logout</a></span>
+              <ul class="submenu">
+                <li>
+                  <a href="{% url as-logout %}">Logout</a>
+                </li>
+              </ul>
               {% endblock submenu %}
             </div><!-- #navbar -->
             {% comment %}
