@@ -1,3 +1,7 @@
+0.2.1
+
+* Fixed broken link assigned to usernames on log entries.
+
 0.2
 
 * Superusers can now log into and out of admin_sentry (and their app's admin interface) via /admin_sentry/[login|logout].

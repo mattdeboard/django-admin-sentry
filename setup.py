@@ -14,7 +14,7 @@ except ImportError:
 
 setup(
     name='django-admin-sentry',
-    version='0.2',
+    version='0.2.1',
     author='Matt DeBoard',
     author_email='mattdeboard@gmail.com',
     include_package_data=True,
