@@ -42,7 +42,7 @@
             {{ result.action_time|time:"H:i:s" }}</h3>
         <span class="user"><a class="userlink" href="user/{{ result.user }}">{{ result.user }}</a></span>
         <span class="objrepr"><a class="objlink" 
-                href="/admin/{{ result.get_admin_url }}">
+                href="/admin/{{ result.get_admin_url }}" target="_blank">
                 {{ result.object_repr }}</a>
     </li>
 </ul>
