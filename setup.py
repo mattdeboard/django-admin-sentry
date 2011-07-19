@@ -18,7 +18,7 @@ setup(
     author='Matt DeBoard',
     author_email='mattdeboard@gmail.com',
     include_package_data=True,
-    packages=['admin_sentry'],
+    packages=find_packages(),
     install_required=install_requires,
 )
 
