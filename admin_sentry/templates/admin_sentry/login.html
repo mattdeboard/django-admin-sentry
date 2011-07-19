@@ -1,0 +1,14 @@
+{% extends 'admin_sentry/layout.html' %}
+{% load i18n %}
+<div id="login_form">
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <form method="post" action=".">
+    
+  
