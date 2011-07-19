@@ -45,6 +45,8 @@ class ChoiceWidget(Widget):
 
         for key, val in choices.iteritems():
             key = unicode(key)
+            if len(val) >= 23:
+                val = val[:20] + "..."
             output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)'
                           's&amp;%(column)s=%(key)s">%(value)s</a></li>' %
                           dict(active=value == key and ' class="active"' or '',
