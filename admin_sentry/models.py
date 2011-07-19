@@ -6,6 +6,3 @@ from django.contrib.admin.models import LogEntry
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import smart_unicode
 from django.utils.safestring import mark_safe
-
-import admin_sentry.diff_match_patch as diff
-        
