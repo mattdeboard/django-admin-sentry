@@ -43,7 +43,6 @@ h1 a:hover {
     width: 300px;
     margin: 0em 2em 2em 1.5em;
     background: inherit;
-    overflow: hidden;
 }
 
 #sidebar h2 {
@@ -51,7 +50,11 @@ h1 a:hover {
     font-variant: small-caps;
 }
 
-.filter-list { margin-left: 0; text-transform: lowercase; }
+.filter-list {
+    margin-left: 0;
+    text-transform: lowercase;
+    list-style-type: none;
+}
 
 .filter-select {
     padding: 10px;
@@ -174,6 +177,7 @@ span.category {
 
 ul.entries {
     list-style-type: none;
+    clear: both;
 }
 
 .entries li {
