@@ -1,3 +1,5 @@
 *.pyc
 *.swp
-build/
+build/*
+dist/*
+django_admin_sentry.egg-info/*

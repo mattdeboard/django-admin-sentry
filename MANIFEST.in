@@ -1,0 +1,3 @@
+include setup.py MANIFEST.in
+recursive-include admin_sentry/templates *
+recursive-include admin_sentry/static *
