@@ -16,8 +16,13 @@ First, install the package:
 
   `$ pip install git+git://github.com/mattdeboard/django-admin-sentry.git`
 
-Then, add `admin_sentry` to your package's INSTALLED_APPS setting.
+Then, add the following to your package's settings.INSTALLED_APPS:
 
+  'paging',
+  'admin_sentry',
+
+'paging' must precede 'admin_sentry'.
+  
 Finally, add the following lines to your project's `urls.py`:
 
   import admin_sentry
