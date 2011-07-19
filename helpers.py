@@ -68,11 +68,3 @@ def cache_users():
         cache.set(cache_key, users, MINUTES_TO_CACHE * 60)
 
     return users
-
-def get_diff(sender, **kwargs):
-    '''
-    Depends on Google's diff_match_patch script.
-    http://code.google.com/p/google-diff-match-patch
-    '''
-    
-    return diff.diff_main(old, new)
