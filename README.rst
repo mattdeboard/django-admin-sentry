@@ -6,6 +6,8 @@ Admin Sentry is an interactive admin log viewer modeled heavily on David Cramer'
 
 As of this sub-1.0 release, interaction with the admin logging system is fairly limited, but it is more robust than the default system. (Admittedly, this isn't saying much.)
 
+Also included is a LogEntryAdmin view, so your log entries will be browsable from the normal admin panel. :)
+
 -------------
 Installation
 -------------
