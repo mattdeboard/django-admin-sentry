@@ -18,8 +18,6 @@ Then, add `admin_sentry` to your package's INSTALLED_APPS setting.
 
 Finally, add the following lines to your project's `urls.py`:
 
-.. sourcecode:: python
-
   import admin_sentry
 
   urlpatterns = pattern('',
