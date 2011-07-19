@@ -1,3 +1,7 @@
+0.2.2
+
+* Users with no log entries in the system are no longer be represented in the User filter widget.
+
 0.2.1
 
 * Fixed broken link assigned to usernames on log entries.
