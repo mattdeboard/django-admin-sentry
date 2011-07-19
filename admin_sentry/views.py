@@ -1,16 +1,18 @@
+from django.contrib import messages
 from django.contrib.admin.models import LogEntry
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
 from admin_sentry.helpers import *
 from admin_sentry.forms import ASLogin
+from admin_sentry.decorators import login_required
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 
 @cache_page(300)
-@login_required
+@login_required(login_url='/admin_sentry/login/')
 def index(request):
     filters = []
     for filter_ in get_filters():
@@ -47,7 +49,7 @@ def as_login(request):
         else:
             messages.error(request, "Invalid username or password. Ensure y"
                            "ou are logging in using your application's admi"
-                           "n user/pass.")
+                           "n user/pass.", fail_silently=True)
 
     return render_to_response('admin_sentry/login.html', {'form': form},
                               context_instance=RequestContext(request))
