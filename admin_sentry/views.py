@@ -44,13 +44,13 @@ def as_login(request):
                 messages.error(request, "You do not have proper permissions to "
                                "use this application. Ensure you are logging in"
                                " using your application's admin user/pass.")
-            else:
-                messages.error(request, "Invalid username or password. Ensure y"
-                               "ou are logging in using your application's admi"
-                               "n user/pass.")
+        else:
+            messages.error(request, "Invalid username or password. Ensure y"
+                           "ou are logging in using your application's admi"
+                           "n user/pass.")
 
     return render_to_response('admin_sentry/login.html', {'form': form},
-                              context_instance=RequestContext(request)))
+                              context_instance=RequestContext(request))
 
 
         
