@@ -2,7 +2,7 @@ from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 
-from admin_sentry.helpers import cache_users
+from sawmill.helpers import cache_users
 
 
 class Widget(object):
@@ -89,7 +89,7 @@ class BaseFilter(object):
         return '?' + query_dict.urlencode()
 
     def get_choices(self):
-        from admin_sentry import FilterValue
+        from sawmill import FilterValue
         return SortedDict((l, l) for l in
                 FilterValue.objects.filter(key=self.column).values_list('value',
                     flat=True).order_by('value'))

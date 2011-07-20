@@ -1,8 +1,8 @@
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
 
-from admin_sentry.conf import USER_PROFILE_URL
-from admin_sentry.helpers import cache_users
+from sawmill.conf import USER_PROFILE_URL
+from sawmill.helpers import cache_users
 
 register = template.Library()
 

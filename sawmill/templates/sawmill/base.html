@@ -6,7 +6,7 @@
         <meta name="robots" content="NONE,NOARCHIVE">
         <link href='http://fonts.googleapis.com/css?family=Oswald&v2' rel='stylesheet' type='text/css'>
         <link href="http://fonts.googleapis.com/css?family=Oswald&v2" rel="stylesheet" type="text/css">
-        <link href="{% url as-media 'css/style.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% url sawmill-media 'css/style.css' %}" rel="stylesheet" type="text/css">
         {% block extra_css %}{% endblock extra_css %}
         <title>{% block title %}Admin Sentry{% endblock %}</title>
     </head>
@@ -15,7 +15,7 @@
         {% block body %}
         <div id="header">
             <div class="container">
-                <h1 id="app_title"><a href="{% url admin_sentry %}">Admin Sentry</a></h1>
+                <h1 id="app_title"><a href="{% url sawmill %}">Sawmill</a></h1>
                 {% block search %}
                 <!--    <form id="search" method="GET" action="/">
                         <input type="hidden" name="sort" value="{% if sort %}{{ sort }}{% endif %}"/>
@@ -29,7 +29,7 @@
               {% block submenu %}
               <ul class="submenu">
                 <li>
-                  <a href="{% url as-logout %}">Logout</a>
+                  <a href="{% url sawmill-logout %}">Logout</a>
                 </li>
                 <li>
                   <a href="/admin" target="_blank">Project Admin</a>
@@ -55,7 +55,7 @@
                             <ul class="subnav" id="changes">
                                 {% for t in changes %}
                                 <li>
-                                <a href="/admin_sentry/changes/{{ t|trans_actions }}">{{ t|trans_actions }}</a>
+                                <a href="/sawmill/changes/{{ t|trans_actions }}">{{ t|trans_actions }}</a>
                                 {% endfor %}
                                 </li>
                             </ul>
