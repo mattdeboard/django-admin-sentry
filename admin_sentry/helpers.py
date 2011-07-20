@@ -57,7 +57,7 @@ def cache_users():
     users = cache.get(cache_key)
 
     if not users:
-        users = User.objects.all()
-        cache.set(cache_key, users, MINUTES_TO_CACHE * 60)
+        users = User.objects.filter(logentry__id__isnull=False).distinct()
+        cache.set(cache_key, users, MINUTES_TO_CACHE * 1)
 
     return users
