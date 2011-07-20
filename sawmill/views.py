@@ -17,7 +17,7 @@ def index(request):
     filters = []
     for filter_ in get_filters():
         filters.append(filter_(request))
-    qs = LogEntry.objects.all().order_by("-action_time")
+    qs = LogEntry.objects.all()
     
     if request.GET.get("user"):
         qs = get_user_logs(qs, request.GET["user"])
