@@ -107,10 +107,8 @@ class UserFilter(BaseFilter):
     column = 'user'
     
     def get_choices(self):
-        userdict = SortedDict([])
-        for user in cache_users():
-            if user.logentry__set.count():
-                userdict.insert(0, user.id, user.username)
+        userdict = SortedDict([(user.id, user.username) for user in cache_users()
+                               if user.logentry_set.count()])
         return userdict
 
 
