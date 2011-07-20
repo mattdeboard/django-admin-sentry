@@ -1,3 +1,5 @@
+from django.contrib.admin.models import LogEntry
+from django.contrib.auth.models import User
 from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
@@ -44,16 +46,19 @@ class ChoiceWidget(Widget):
                            column=column,))
 
         for key, val in choices.iteritems():
+            count = self.filter.get_count(key)
             key = unicode(key)
             if len(val) >= 23:
                 val = val[:20] + "..."
             output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)'
-                          's&amp;%(column)s=%(key)s">%(value)s</a></li>' %
+                          's&amp;%(column)s=%(key)s">%(value)s<span class="'
+                          'count">%(count)s</span></a></li>' %
                           dict(active=value == key and ' class="active"' or '',
                                column=column,
                                key=key,
                                value=val,
-                               query_string=query_string,))
+                               query_string=query_string,
+                               count=count,))
         output.append('</ul>')
         return mark_safe('\n'.join(output))
                                                                   
@@ -94,6 +99,10 @@ class BaseFilter(object):
                 FilterValue.objects.filter(key=self.column).values_list('value',
                     flat=True).order_by('value'))
 
+    def get_count(self):
+        raise NotImplemented
+        return
+
     def get_widget(self):
         return self.widget(self, self.request)
 
@@ -111,6 +120,9 @@ class UserFilter(BaseFilter):
                                if user.logentry_set.count()])
         return userdict
 
+    def get_count(self, userid):
+        logdict = LogEntry.objects.filter(user=userid).count()
+
 
 class ObjectFilter(BaseFilter):
     label = 'Object'
@@ -123,4 +135,7 @@ class ActionFilter(BaseFilter):
 
     def get_choices(self):
         return {1: 'Addition', 2: 'Change', 3: 'Deletion'}
+
+    def get_count(self, action):
+        return LogEntry.objects.filter(action_flag=action).count()
 
