@@ -28,7 +28,7 @@ h1 a:visited {
 }
 
 .container {
-    width: 1500px;
+    width: 950px;
     margin: auto;
 }
 
@@ -63,7 +63,7 @@ ul.submenu li a:hover {
 
 #sidebar {
     float: right;
-    width: 300px;
+    width: 200px;
     margin: 0em 2em 2em 1.5em;
     background: inherit;
 }
@@ -77,6 +77,19 @@ ul.submenu li a:hover {
     margin-left: 0;
     text-transform: lowercase;
     list-style-type: none;
+    margin-bottom: 20px;
+}
+
+.filter-list li:first-child a {
+    border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 10px 10px 0 0;
+}
+
+.filter-list li:last-child a {
+    border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
 }
 
 .filter-select {
@@ -159,14 +172,14 @@ dl.flat {
     background: white;
     max-width: 100%;
     overflow: hidden;
-    margin: 2em 0 2em 2em;
+    margin: 2em 0 2em 0;
+    padding: 20px;
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-box-shadow: 0 1px 4px #C5C5C5;
     -webkit-box-shadow: 0 1px 4px #C5C5C5;
     box-shadow: 01px 4px #C5C5C5;
-    padding: 20px 20px 0;
     min-height: 800px;
 }
 
@@ -194,10 +207,6 @@ span.category {
     margin-right: 75px;
     font-variant: small-caps;
     font-size: 0.9em;
-}
-
-.container #body {
-    padding: 20px;
 }
 
 ul.entries {
