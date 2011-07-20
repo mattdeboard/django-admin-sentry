@@ -13,8 +13,8 @@ except ImportError:
     install_requires.append('uuid')
 
 setup(
-    name='django-admin-sentry',
-    version='0.2.2',
+    name='django-sawmill',
+    version='1.0.0',
     author='Matt DeBoard',
     author_email='mattdeboard@gmail.com',
     include_package_data=True,
