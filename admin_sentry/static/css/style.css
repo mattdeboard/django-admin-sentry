@@ -9,21 +9,22 @@ body {
     background: #c5c5c5;
 }
 
+div.container a {
+    text-decoration: none;
+}
+
+div.container a:hover {
+    color: #730046;
+}
+
+
 h1 {
     font-family: "Oswald", sans-serif !important;
     font-variant: small-caps;
 }
 
-h1 a {
-    text-decoration: none;
-}
-
 h1 a:visited {
-    color: black;
-}
-
-h1 a:hover {
-    color: #006ca3;
+    color: #666;
 }
 
 .container {
@@ -91,35 +92,37 @@ ul.submenu li a:hover {
     padding: 10px;
     text-decoration: none;
     border-bottom: 1px solid rgba(0,0,0, .05);
-    -moz-box-shadow: 0 1px 0 rgba(255,255,255, .3);
-    -webkit-box-shadow: 0 1px 0 rgba(255,255,255, .3);
+    -moz-box-shadow: inset 0 1px 1px rgba(255,255,255, .3);
+    -webkit-box-shadow: inset 0 1px 1px rgba(255,255,255, .3);
     font-weight: bold;
     color: #666;
 }
 
 .filter-list li a:hover  {
     background: rgba(131,136,142, .10);
-    -moz-box-shadow: inset 0 1px 0 rgba(0,0,0, .1);
-    -webkit-box-shadow: inset 0 1px 0 rgba(0,0,0, .1);
+    color: white;
+    text-shadow: #000;
+    -moz-box-shadow: inset 0 1px 1px #000, 0 1px 0 #fff;
+    -webkit-box-shadow: inset 0 1px 1px #000, 0 1px 0 #fff;
 }
 
 .filter-list li.active a {
     background: #229b44;
     color: #fff;
-    text-shadow: 0 -1px 0 #3079d0;
+    text-shadow: 0 -1px 0 #8c2a00;
     border-top: 1px solid rgba(0,0,0, .2);
     border-bottom: 1px solid rgba(0,0,0, .2);
     -moz-box-shadow: inset 0 0 1px #229b44, 0 1px 0 #fff;
     -webkit-box-shadow: inset 0 0 1px #229b44, 0 1px 0 #fff;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#89d151', endColorstr='#229b44'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#89d151), to(#229b44)); /* for webkit browsers */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#feca80', endColorstr='#e88801'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#feca80), to(#e88801)); /* for webkit browsers */
     background: -moz-linear-gradient(top,  #89d151,  #229b44); /* for firefox 3.6+ */
     }
 
 .filter-list li:first-child.active a {
     -moz-box-shadow: inset 0 1px 1px rgba(0,0,0, .30);
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0, .30);
-    }
+}
 
 .filter-list li:first-child a:hover, .filter-list li:first-child.active a {
     -moz-border-radius: 10px 10px 0 0;
@@ -259,7 +262,7 @@ a.userlink, a.objlink {
 }
 
 a.userlink:hover, a.objlink:hover {
-    color: #006ca3;
+    color: #730046;
 }
 
 .changemsg {
@@ -269,20 +272,20 @@ a.userlink:hover, a.objlink:hover {
 }
 
 .action.addition {
-    background:-moz-linear-gradient(center top , #58d748, #118c00) repeat scroll 0 0 transparent;
-    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#58d748), to(#118c00));
+    background:-moz-linear-gradient(center top , #bfbb11, #7ba012) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#bfbb11), to(#7ba012));
 }
 
 .action.change {
     background: #ff7800;
-    background:-moz-linear-gradient(center top , #efd57c, #e0ae00) repeat scroll 0 0 transparent;
-    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#efd57c), to(#e0ae00));
+    background:-moz-linear-gradient(center top , #ffc200, #b28900) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffc200), to(#b28900));
 }
 
 .action.deletion {
     background: #ff5400;
-    background:-moz-linear-gradient(center top , #F16C7C, #BF404F) repeat scroll 0 0 transparent;
-    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F16C7C), to(#BF404F));
+    background:-moz-linear-gradient(center top , #fed2bf, #C93C00) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fed2bf), to(#C93C00));
 }
 
 /* Paging style */
@@ -367,8 +370,9 @@ a.userlink:hover, a.objlink:hover {
 
 .paging-endless li a:hover {
     color: white;
-    background: -webkit-gradient(linear, left top, left bottom, from(#89d151), to(#229b44));
-    background:-moz-linear-gradient(center top, #89d151 0pt, #229b44 100%) repeat scroll 0 0 transparent;
+    text-shadow: #8c2a00;
+    background: -webkit-gradient(linear, left top, left bottom, from(#feca80), to(#e88801)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #89d151,  #229b44); /* for firefox 3.6+ */
     font-weight: bold;
     font-variant: small-caps;
 }
