@@ -107,7 +107,6 @@ ul.submenu li a:hover {
     border-bottom: 1px solid rgba(0,0,0, .05);
     -moz-box-shadow: inset 0 1px 1px rgba(255,255,255, .3);
     -webkit-box-shadow: inset 0 1px 1px rgba(255,255,255, .3);
-    font-weight: bold;
     color: #666;
 }
 
@@ -129,7 +128,7 @@ ul.submenu li a:hover {
     -webkit-box-shadow: inset 0 0 1px #229b44, 0 1px 0 #fff;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#feca80', endColorstr='#e88801'); /* for IE */
     background: -webkit-gradient(linear, left top, left bottom, from(#feca80), to(#e88801)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #89d151,  #229b44); /* for firefox 3.6+ */
+    background: -moz-linear-gradient(top,  #feca80,  #e88801); /* for firefox 3.6+ */
     }
 
 .filter-list li:first-child.active a {
@@ -381,7 +380,7 @@ a.userlink:hover, a.objlink:hover {
     color: white;
     text-shadow: #8c2a00;
     background: -webkit-gradient(linear, left top, left bottom, from(#feca80), to(#e88801)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #89d151,  #229b44); /* for firefox 3.6+ */
+    background: -moz-linear-gradient(top,  #feca80,  #e88801); /* for firefox 3.6+ */
     font-weight: bold;
     font-variant: small-caps;
 }
