@@ -75,7 +75,7 @@ ul.submenu li a:hover {
 
 .filter-list {
     margin-left: 0;
-    text-transform: lowercase;
+    font-variant: small-caps;
     list-style-type: none;
     margin-bottom: 20px;
 }
