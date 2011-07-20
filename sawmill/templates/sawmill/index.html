@@ -4,7 +4,6 @@
 {% load paging_extras %}
 
 {% block heading %}{% trans "Dashboard" %}{% endblock %}
-
 {% block sidebar %}
     {% if chart_url %}
         <h2>{% trans "Last 24 Hours" %}</h2>
@@ -21,9 +20,14 @@
             </form>
         </div>
     {% endfor %}
-{% endblock %}
+{% endblock sidebar %}
 
 {% block main %}
+{% with results|log_dates as log_dates %}
+{% include 'sawmill/chart.html' %}
+{% endwith %}
+<div id="chart">
+</div>
 {% paginate results from request as results per_page 10 %}
 <div class="paging-wrap">
 {{ results.paging }}
@@ -57,6 +61,5 @@
 <div class="paging-bottom">
     {{ results.paging }}
 </div>
-
-{% endblock %}
+{% endblock main %}
 

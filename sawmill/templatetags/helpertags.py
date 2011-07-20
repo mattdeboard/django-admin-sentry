@@ -1,5 +1,9 @@
+import json
+
 from django import template
+from django.contrib.admin.models import LogEntry
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.datastructures import SortedDict
 
 from sawmill.conf import USER_PROFILE_URL
 from sawmill.helpers import cache_users
@@ -56,18 +60,23 @@ def get_user_admin_url(value):
     return "%s/%s" % (USER_PROFILE_URL, uid)
     
 @register.filter
-def get_log_dates(queryset):
+def log_dates(queryset):
     '''
     Given a LogEntry queryset, return a list of 3-tuples. Each 3-tuple
-    contains (year, month, day) of the LogEntry's creation date.
+    contains (year, month, day) of the LogEntry's creation date. No
+    duplicates permitted.
     '''
     at = 'action_time'
     qs = queryset.filter(action_time__isnull=False).distinct().values(at)
     dates = []
     for entry in qs:
-        date_val = entry[at]
-        date_tuple = (date_val.year, date_val.month, date_val.day,)
-        if date_tuple not in dates:
-            dates.append(date_tuple)
-    return dates
-    
+        if entry[at] not in dates:
+            dates.append(entry[at])
+    return {'points':[(str(date), LogEntry.objects.filter(action_time=date).count())\
+                      for date in dates],
+            'dates': dates}
+
+@register.filter
+def to_json(value):
+    return json.dumps(value)
+
