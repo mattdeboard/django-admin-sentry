@@ -121,7 +121,7 @@ class UserFilter(BaseFilter):
         return userdict
 
     def get_count(self, userid):
-        logdict = LogEntry.objects.filter(user=userid).count()
+        return LogEntry.objects.filter(user=userid).count()
 
 
 class ObjectFilter(BaseFilter):
