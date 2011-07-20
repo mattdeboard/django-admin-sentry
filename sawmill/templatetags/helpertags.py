@@ -55,3 +55,19 @@ def get_user_admin_url(value):
         
     return "%s/%s" % (USER_PROFILE_URL, uid)
     
+@register.filter
+def get_log_dates(queryset):
+    '''
+    Given a LogEntry queryset, return a list of 3-tuples. Each 3-tuple
+    contains (year, month, day) of the LogEntry's creation date.
+    '''
+    at = 'action_time'
+    qs = queryset.filter(action_time__isnull=False).distinct().values(at)
+    dates = []
+    for entry in qs:
+        date_val = entry[at]
+        date_tuple = (date_val.year, date_val.month, date_val.day,)
+        if date_tuple not in dates:
+            dates.append(date_tuple)
+    return dates
+    
