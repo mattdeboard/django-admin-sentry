@@ -1,4 +1,5 @@
 from django import template
+from django.core.exceptions import ObjectDoesNotExist
 
 from admin_sentry.conf import USER_PROFILE_URL
 from admin_sentry.helpers import cache_users
@@ -46,6 +47,11 @@ def get_user_admin_url(value):
     path to the user's admin profile.
     '''
     users = cache_users()
-    user = users.get(username=value)
-    return "%s/%s" % (USER_PROFILE_URL, str(user.id))
+    try:
+        user = users.get(username=value)
+        uid = str(user.id)
+    except ObjectDoesNotExist:
+        uid = '#'
+        
+    return "%s/%s" % (USER_PROFILE_URL, uid)
     
