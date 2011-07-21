@@ -24,7 +24,63 @@
 
 {% block main %}
 {% with results|log_dates as log_dates %}
-{% include 'sawmill/chart.html' %}
+<script type="text/javascript">
+var chart1;
+var getData = function () {
+  var arr = new Array;
+  for (entry in logDates) {
+    arr.push([parseInt(logDates[entry][0]),
+              parseInt(logDates[entry][1])]);
+  };
+  return arr;
+};
+var logDates = {{ log_dates.points|to_json }};
+var chart;
+$(document).ready(function () {
+  chart = new Highcharts.Chart({
+    chart: {
+      renderTo: 'chart',
+      zoomType: 'x',
+      backgroundColor: '#c5c5c5',
+      height: 200,
+    },
+    
+    title: {
+      text: 'User Activity'
+    },
+    
+    xAxis: {
+      type: 'datetime',
+      title: {
+        text: false
+      },
+      dateTimeLabelFormats: {
+        second: '%H:%M:%S',
+        minute: '%H:%M',
+        hour: '%d %b %H:%M',
+        day: '%e. %b',
+        week: '%e. %b',
+        month: '%b \'%y',
+        year: '%Y'
+      }
+    },
+    
+    yAxis: {
+      title: {
+        text: "# of Events"
+      },
+      min: 0,
+      max: 150
+    },
+    
+    series: [{
+      type: 'scatter',
+      data: getData(),
+      name: "2011 Activity"
+    }]
+  });
+});                  
+</script>
 <div id="chart">
 </div>
 {% endwith %}
