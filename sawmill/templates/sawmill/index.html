@@ -25,12 +25,11 @@
 {% block main %}
 {% with results|log_dates as log_dates %}
 <script type="text/javascript">
-var chart1;
-var getData = function () {
+var getData = function (nestedArray) {
   var arr = new Array;
-  for (entry in logDates) {
-    arr.push([parseInt(logDates[entry][0]),
-              parseInt(logDates[entry][1])]);
+  for (entry in nestedArray) {
+    arr.push([parseInt(nestedArray[entry][0]),
+              parseInt(nestedArray[entry][1])]);
   };
   return arr;
 };
@@ -75,7 +74,7 @@ $(document).ready(function () {
     
     series: [{
       type: 'scatter',
-      data: getData(),
+      data: getData(logDates),
       name: "2011 Activity"
     }]
   });
