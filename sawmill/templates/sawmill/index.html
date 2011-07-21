@@ -23,9 +23,7 @@
 {% endblock sidebar %}
 
 {% block main %}
-{% load cache %}
 {% with results|log_dates as log_dates %}
-{% cache 600 log_dates %}
         <script type="text/javascript">
 var getData = function (nestedArray) {
   var arr = new Array;
@@ -88,7 +86,7 @@ $(document).ready(function () {
     
     series: [{
       name: "Log Entries",
-      type: 'scatter',
+      type: 'area',
       data: getData(logDates),
       color: '#730046',
       title: {
@@ -108,7 +106,6 @@ $(document).ready(function () {
 </script>
 <div id="chart">
 </div>
-{% endcache %}
 {% endwith %}
 
 {% paginate results from request as results per_page 10 %}

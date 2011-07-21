@@ -36,7 +36,7 @@ def get_action_logs(queryset, action):
         # `action` comes in as a string from request.GET, so must force
         # to int.
         results = queryset.filter(action_flag=int(action))
-        cache.set(cache_key, results, MINUTES_TO_CACHE * 60)
+        #cache.set(cache_key, results, MINUTES_TO_CACHE * 60)
 
     return results
 

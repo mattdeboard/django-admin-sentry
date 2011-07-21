@@ -71,6 +71,8 @@ ul.submenu li a:hover {
 #sidebar h2 {
     font-family: "Oswald", sans-serif;
     font-variant: small-caps;
+    margin-left: 8px;
+    color: #444;
 }
 
 .filter-list {
