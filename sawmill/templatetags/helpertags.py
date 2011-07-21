@@ -70,13 +70,22 @@ def log_dates(queryset):
     qs = queryset.filter(action_time__isnull=False).distinct().values(at)
     dates = []
     for entry in qs:
-        if entry[at] not in dates:
+        if entry['action_time'] not in dates:
             dates.append(entry[at])
-    return {'points':[(str(date), LogEntry.objects.filter(action_time=date).count())\
-                      for date in dates],
-            'dates': dates}
+            
+    return {'points':[[int(date.strftime("%s")) * 1000,
+                       LogEntry.objects.filter(action_time=date).count()] for \
+                      date in dates],
+            'dates': [int(date.strftime("%s")) * 1000 for date in dates]}
 
 @register.filter
 def to_json(value):
     return json.dumps(value)
+
+@register.filter
+def first(iterable):
+    return iterable[0]
+
+def last(iterable):
+    return iterable[-1]
 

@@ -25,9 +25,10 @@
 {% block main %}
 {% with results|log_dates as log_dates %}
 {% include 'sawmill/chart.html' %}
-{% endwith %}
 <div id="chart">
 </div>
+{% endwith %}
+
 {% paginate results from request as results per_page 10 %}
 <div class="paging-wrap">
 {{ results.paging }}
