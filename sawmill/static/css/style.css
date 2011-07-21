@@ -237,7 +237,6 @@ ul.entries {
 .entries li {
     padding: 8px;
     position: relative;
-    padding-right: 50px;
     overflow: hidden;
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
@@ -256,7 +255,7 @@ span.action {
     -moz-border-radius: 6px;
     border-radius: 6px;
     padding: 4px;
-    line-height: 19px;
+    line-height: 33px;
     color: #fff;
     display: inline-block;
     margin-right: 5px;
@@ -264,9 +263,15 @@ span.action {
 
 li.row {
     background: #f4f4f5;
+    margin-bottom: 10px;
 }
 
-.user, .objrepr {
+div.message.user {
+    display: block;
+    margin-bottom: 10px;
+}
+
+span.user, span.objrepr {
     font-size: 0.9em;
     white-space: nowrap;
     color: #bbb;
@@ -275,13 +280,6 @@ li.row {
     -webkit-border-radius: 5px;
     border-radius: 5px;
     padding: 2px;
-}
-
-.user {
-    float: left;
-}
-
-.objrepr {
     float: right;
 }
 
@@ -294,10 +292,12 @@ a.userlink:hover, a.objlink:hover {
     color: #730046;
 }
 
-.changemsg {
+.changemsg, .time {
     font-size: 0.9em;
-    white-space: nowrap;
-    font-variant: small-caps;
+}
+
+.action {
+    float: left;
 }
 
 .action.addition {
@@ -337,7 +337,7 @@ a.userlink:hover, a.objlink:hover {
 .paging-endless {
     float: left;
     display: inline;
-    margin-right: 0;
+    margin: 0 0 0 8px;
     list-style: none;
 }
 
