@@ -72,11 +72,14 @@ def log_dates(queryset):
     at = 'action_time'
     qs = queryset.order_by('action_time')
     dates = []
+    count = 1
     for date, group in itertools.groupby(qs, key=extract_date):
         dates.append([int(date.strftime("%s")) * 1000, len(list(group))])
 
-    return {'points': dates, 'max_count': math.ceil(max(dates,
-                                                        key=get_max)[1] * 1.1)}
+    if dates:
+        count = math.ceil(max(dates, key=get_max)[1] * 1.1)
+
+    return {'points': dates, 'max_count': count}
 
 def extract_date(log):
     '''
