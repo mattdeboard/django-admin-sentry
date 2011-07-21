@@ -40,15 +40,20 @@ $(document).ready(function () {
   chart = new Highcharts.Chart({
     chart: {
       renderTo: 'chart',
-      zoomType: 'x',
-      backgroundColor: '#c5c5c5',
+      zoomType: 'xy',
+      backgroundColor: {
+        linearGradient: [0, 0, 500, 500],
+        stops: [
+          [0, 'rgb(232, 136, 1)'],
+          [1, 'rgb(254, 202, 128)']]
+      },
       height: 200
     },
     
     title: {
       text: 'User Activity',
       style: {
-        color: '#444'
+        color: '#fff'
       }
     },
     
@@ -72,7 +77,7 @@ $(document).ready(function () {
       title: {
         text: "# of Events",
         style: {
-          color: '#444'
+          color: '#fff'
         }
       },
       min: 0,
@@ -92,6 +97,10 @@ $(document).ready(function () {
     legend: {
       enabled: false
     }
+  });
+  
+  $(chart).live('selection', function (e) {
+    alert("hello!");
   });
 });                  
 </script>
