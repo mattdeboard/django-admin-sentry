@@ -48,8 +48,8 @@ class ChoiceWidget(Widget):
         for key, val in choices.iteritems():
             count = self.filter.get_count(key)
             key = unicode(key)
-            if len(val) >= 23:
-                val = val[:20] + "..."
+            if len(val) >= 20:
+                val = val[:17] + "..."
             output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)'
                           's&amp;%(column)s=%(key)s">%(value)s<span class="'
                           'count">%(count)s</span></a></li>' %
