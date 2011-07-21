@@ -5,6 +5,7 @@ import math
 from django import template
 from django.contrib.admin.models import LogEntry
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.defaultfilters import stringfilter
 from django.utils.datastructures import SortedDict
 
 from sawmill.conf import USER_PROFILE_URL
@@ -95,9 +96,10 @@ def to_json(value):
     return json.dumps(value)
 
 @register.filter
-def first(iterable):
-    return iterable[0]
-
-def last(iterable):
-    return iterable[-1]
-
+@stringfilter
+def truncstr(value, l=10):
+    '''
+    Truncates a string to l characters, including three-period ellipsis.
+    '''
+    return value[:l-3] + '...'
+    
