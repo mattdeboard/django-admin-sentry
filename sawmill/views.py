@@ -1,3 +1,5 @@
+import itertools
+
 from django.contrib import messages
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth import login, authenticate, logout
@@ -14,6 +16,7 @@ ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 @cache_page(300)
 @login_required(login_url='/sawmill/login/')
 def index(request):
+    # needs superuser verification
     filters = []
     for filter_ in get_filters():
         filters.append(filter_(request))
@@ -57,4 +60,15 @@ def as_login(request):
 def as_logout(request):
     logout(request)
     return render_to_response("sawmill/logout.html")
-        
+
+@login_required(login_url='/sawmill/login')
+def obj_overview(request, obj):
+    # needs superuser check
+    qs = LogEntry.objects.filter(object_repr=obj)
+    log_group = [[log.user, len(list(group))] for log, group in \
+                 itertools.groupby(qs, key=qs.user)]
+    return render_to_response('sawmill/obj.html',
+                              {'editors': [i[0] for i in log_group],
+                               'edit_counts': log_group,
+                               'results': qs},
+                              context_instance=RequestContext(request))

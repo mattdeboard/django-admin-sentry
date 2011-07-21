@@ -48,7 +48,7 @@ def get_user_logs(queryset, user):
         # `user` comes in as a string from request.GET, so must force to
         # int.
         results = queryset.filter(user=int(user))
-        cache.set(cache_key, results, MINUTES_TO_CACHE * 5)
+        cache.set(cache_key, results, MINUTES_TO_CACHE * 60)
 
     return results
 
