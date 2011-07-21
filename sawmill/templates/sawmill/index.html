@@ -34,6 +34,7 @@ var getData = function (nestedArray) {
   return arr;
 };
 var logDates = {{ log_dates.points|to_json }};
+var maxCount = parseInt({{ log_dates.max_count }}, 10);
 var chart;
 $(document).ready(function () {
   chart = new Highcharts.Chart({
@@ -45,7 +46,10 @@ $(document).ready(function () {
     },
     
     title: {
-      text: 'User Activity'
+      text: 'User Activity',
+      style: {
+        color: '#444'
+      }
     },
     
     xAxis: {
@@ -66,20 +70,28 @@ $(document).ready(function () {
     
     yAxis: {
       title: {
-        text: "# of Events"
+        text: "# of Events",
+        style: {
+          color: '#444'
+        }
       },
       min: 0,
-      max: 150
+      max: maxCount
     },
     
     series: [{
+      name: "Log Entries",
       type: 'scatter',
       data: getData(logDates),
-      name: null,
+      color: '#730046',
       title: {
         text: false
       }
-    }]
+    }],
+    
+    legend: {
+      enabled: false
+    }
   });
 });                  
 </script>

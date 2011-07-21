@@ -1,3 +1,4 @@
+import itertools
 import json
 
 from django import template
@@ -67,17 +68,26 @@ def log_dates(queryset):
     duplicates permitted.
     '''
     at = 'action_time'
-    qs = queryset.filter(action_time__isnull=False).distinct().values(at)
+    qs = queryset.order_by('action_time')
     dates = []
-    for entry in qs:
-        if entry['action_time'] not in dates:
-            dates.append(entry[at])
-            
-    return {'points':[[int(date.strftime("%s")) * 1000,
-                       LogEntry.objects.filter(action_time=date).count()] for \
-                      date in dates],
-            'dates': [int(date.strftime("%s")) * 1000 for date in dates]}
+    for date, group in itertools.groupby(qs, key=extract_date):
+        dates.append([int(date.strftime("%s")) * 1000, len(list(group))])
 
+    return {'points': dates, 'max_count': int(max(dates, key=get_max)[1] * 1.1)}
+
+def extract_date(log):
+    '''
+    Extract just the date portion of a datetime object.
+    '''
+    return log.action_time.date()
+
+def get_max(entry):
+    '''
+    Key func for the max call, to return the highest count with a 10%
+    upper cushion.
+    '''
+    return entry[1]
+    
 @register.filter
 def to_json(value):
     return json.dumps(value)

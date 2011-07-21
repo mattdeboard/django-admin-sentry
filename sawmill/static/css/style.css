@@ -408,3 +408,14 @@ a.userlink:hover, a.objlink:hover {
 
 /* End paging style */
 
+/* Chart style */
+
+div#chart {
+    margin-bottom: 20px;
+}
+
+tspan {
+    font-variant: small-caps;
+    font-family: "Oswald", sans-serif;
+}
+
