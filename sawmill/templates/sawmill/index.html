@@ -28,8 +28,8 @@
 var getData = function (nestedArray) {
   var arr = new Array;
   for (entry in nestedArray) {
-    arr.push([parseInt(nestedArray[entry][0]),
-              parseInt(nestedArray[entry][1])]);
+    arr.push([nestedArray[entry][0],
+              nestedArray[entry][1]]);
   };
   return arr;
 };
@@ -41,7 +41,7 @@ $(document).ready(function () {
       renderTo: 'chart',
       zoomType: 'x',
       backgroundColor: '#c5c5c5',
-      height: 200,
+      height: 200
     },
     
     title: {
@@ -75,7 +75,10 @@ $(document).ready(function () {
     series: [{
       type: 'scatter',
       data: getData(logDates),
-      name: "2011 Activity"
+      name: null,
+      title: {
+        text: false
+      }
     }]
   });
 });                  
