@@ -1,5 +1,6 @@
 import itertools
 import json
+import math
 
 from django import template
 from django.contrib.admin.models import LogEntry
@@ -73,7 +74,8 @@ def log_dates(queryset):
     for date, group in itertools.groupby(qs, key=extract_date):
         dates.append([int(date.strftime("%s")) * 1000, len(list(group))])
 
-    return {'points': dates, 'max_count': int(max(dates, key=get_max)[1] * 1.1)}
+    return {'points': dates, 'max_count': math.ceil(max(dates,
+                                                        key=get_max)[1] * 1.1)}
 
 def extract_date(log):
     '''
