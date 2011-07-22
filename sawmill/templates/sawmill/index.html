@@ -115,34 +115,35 @@ $(document).ready(function () {
 {% if results.objects %}
 {% for result in results.objects %}
 <ul class="entries" id="entry_list">
-    <li class="row">
-      <span class="action {{ result.action_flag|trans_actions }}">{{ result.action_flag|abbrev}}</span>
-      <div class="message user">
-        <span class="changemsg">
-          {% if result.change_message %}
-          {{ result.change_message }}
-          {% else %}
-          No Change Message
-          {% endif %}
-        </span>
-        <span class="user"><a class="userlink"
-                              href="{{ result.user|get_user_admin_url }}"
-                              target="_blank">{{ result.user }}</a>
-        </span>
-        </div><!-- .message .user -->
-      <div class="time obj">
-        <span class="time">{{ result.action_time|timesince }} 
-          {{ result.action_time|time:"H:i:s" }}</span>
-        <span class="objrepr">
-          <a class="objlink" 
-             href="/admin/{{ result.get_admin_url }}"
-             target="_blank"
-             title="{{ result.object_repr }}">
-            {{ result.object_repr|truncstr:20 }}
-          </a>
-        </span>
-      </div><!-- .time.obj -->
-    </li>
+  <li class="row" obj_id="{{ result.object_id }}"
+      model_id="{{ result.content_type.id }}">
+    <span class="action {{ result.action_flag|trans_actions }}">{{ result.action_flag|abbrev}}</span>
+    <div class="message user">
+      <span class="changemsg">
+        {% if result.change_message %}
+        {{ result.change_message }}
+        {% else %}
+        No Change Message
+        {% endif %}
+      </span>
+      <span class="user"><a class="userlink"
+                            href="{{ result.user|get_user_admin_url }}"
+                            target="_blank">{{ result.user }}</a>
+      </span>
+    </div><!-- .message .user -->
+    <div class="time obj">
+      <span class="time">{{ result.action_time|timesince }} 
+        {{ result.action_time|time:"H:i:s" }}</span>
+      <span class="objrepr">
+        <a class="objlink" 
+           href="/admin/{{ result.get_admin_url }}"
+           target="_blank"
+           title="{{ result.object_repr }}">
+          {{ result.object_repr|truncstr:20 }}
+        </a>
+      </span>
+    </div><!-- .time.obj -->
+  </li>
 </ul>
 {% endfor %}
 {% else %}
@@ -151,7 +152,7 @@ $(document).ready(function () {
 </div>
 {% endif %}
 <div class="paging-bottom">
-    {{ results.paging }}
+  {{ results.paging }}
 </div>
 {% endblock main %}
 

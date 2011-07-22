@@ -87,6 +87,11 @@ def extract_date(log):
     '''
     return log.action_time.date()
 
+def extract_user(log):
+    '''
+    '''
+    return log.user
+    
 def get_max(entry):
     '''
     Key func for the max call, to return the highest count with a 10%

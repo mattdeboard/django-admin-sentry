@@ -8,9 +8,11 @@ AS_ROOT = os.path.dirname(__file__)
 STATIC_ROOT = AS_ROOT + '/static'
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='sawmill'),
+    url(r'^$', views.index, name='index'),
     url(r'^_static/(?P<path>.*)$', 'django.views.static.serve', 
-        {'document_root':STATIC_ROOT},  name="sawmill-media"),
-    url(r'^login', views.as_login, name='sawmill-login'),
-    url(r'^logout', views.as_logout, name='sawmill-logout'),
+        {'document_root':STATIC_ROOT},  name="media"),
+    url(r'^login', views.as_login, name='login'),
+    url(r'^logout', views.as_logout, name='logout'),
+    url(r'^activity/(?P<model>.*)/(?P<obj_id>.*)', views.obj_overview,
+        name='obj-view'),
 )

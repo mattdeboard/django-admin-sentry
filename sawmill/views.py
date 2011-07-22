@@ -10,6 +10,7 @@ from django.views.decorators.cache import cache_page
 from sawmill.helpers import *
 from sawmill.forms import ASLogin
 from sawmill.decorators import login_required
+from sawmill.templatetags.helpertags import extract_user
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 
@@ -30,8 +31,7 @@ def index(request):
 
     users = cache_users()
     return render_to_response('sawmill/index.html', 
-                              {'results':qs, 'userlist': users,
-                               'changes':ACTIONS.iterkeys(),
+                              {'results':qs,'changes':ACTIONS.iterkeys(),
                                'filters':filters},
                               context_instance=RequestContext(request))
 
@@ -62,12 +62,13 @@ def as_logout(request):
     return render_to_response("sawmill/logout.html")
 
 @login_required(login_url='/sawmill/login')
-def obj_overview(request, obj):
+def obj_overview(request, model, obj_id):
     # needs superuser check
-    qs = LogEntry.objects.filter(object_repr=obj)
-    log_group = [[log.user, len(list(group))] for log, group in \
-                 itertools.groupby(qs, key=qs.user)]
-    return render_to_response('sawmill/obj.html',
+    qs = LogEntry.objects.filter(content_type__id=model).\
+         filter(object_id=obj_id)
+    log_group = [[log, len(list(group))] for log, group in \
+                 itertools.groupby(qs, key=extract_user)]
+    return render_to_response('sawmill/index.html',
                               {'editors': [i[0] for i in log_group],
                                'edit_counts': log_group,
                                'results': qs},
