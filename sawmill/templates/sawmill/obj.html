@@ -84,7 +84,10 @@ $(document).ready(function () {
 {% block main %}
 <div id="chart">
 </div>
-Number of edits: {{ results|length }}      
-
-
+{% with results|log_dates as log_dates %}
+Number of edits: {{ results|length }}<br />
+First edit: {{ log_dates.points|get_date }}<br />
+Most recent edit: {{ log_dates.points|get_date:0 }}<br />
+Most edits by: {{ edit_counts|max_value:0 }}<br />
+{% endwith %}
 {% endblock main %}

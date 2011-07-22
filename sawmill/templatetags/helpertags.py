@@ -1,3 +1,4 @@
+import datetime
 import itertools
 import json
 import math
@@ -96,12 +97,14 @@ def get_max(entry):
     return entry[1]
 
 @register.filter
-def max_value(data):
+def max_value(data, index=1):
     '''
     Takes an iterator with nested iterators, each inner object containing a
     string and an int, and returns the inner obj with the largest int.
     '''
-    return max(data, key=get_max)[1]
+    data = json.loads(data)
+    return max(data, key=get_max)[index]
+
     
 @register.filter
 def to_json(value):
@@ -114,4 +117,13 @@ def truncstr(value, l=10):
     Truncates a string to l characters, including three-period ellipsis.
     '''
     return value[:l-3] + '...'
-    
+
+@register.filter
+def get_date(value, ordinal=-1):
+    '''
+    Retrieves either the most recent or earliest date.
+
+    -1 = most recent
+    0 = earliest
+    '''
+    return datetime.date.fromtimestamp(value[ordinal][0]/1000)
