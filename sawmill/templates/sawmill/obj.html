@@ -152,20 +152,32 @@ var byObjOptions = {
 
 
 $(document).ready(function () {
-var getOptions = function () {
-  console.log($(chart).attr("chartby"));
-  return $("#chart").attr("chartby")=="obj" ? byObjOptions : byUserOptions;
-};
+  
+  $(".chartswitch").bind('click', function () {
+    $("#chart").attr("chartby", function () {
+      return $("#chart").attr("chartby")=="user" ? "obj":"user";
+    });
+  });
+  
+  $("#chart").bind('change', function () {
+    alert("It changed buddy");
+  });
+  var getOptions = function () {
+    console.log($(chart).attr("chartby"));
+    return $("#chart").attr("chartby")=="obj" ? byObjOptions : byUserOptions;
+  };
 
-var options = getOptions();
+  var options = getOptions();
   chart = new Highcharts.Chart(options);
 });
+
 </script>
 {% endwith %}
 {% endblock graph_js %}
 {% block main %}
 <div id="chart" chartby="user">
 </div>
+<button class="chartswitch" type="button">Change Chart Type</button>
 {% with results|log_dates as log_dates %}
 Number of edits: {{ results|length }}<br />
 First edit: {{ log_dates.points|get_date }}<br />
