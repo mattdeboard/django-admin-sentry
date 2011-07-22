@@ -2,6 +2,7 @@
 {% load helpertags %}
 
 {% block graph_js %}
+
 <script type="text/javascript">
 var getColor = function () {
   var colorArray = ['#730046', '#feca80', '#bfbb11', '#7ba012', 
@@ -12,7 +13,7 @@ var getColor = function () {
 var chart;
 var logCountsByUser = {{ edit_counts|safe }};
 var editors = {{ editors|safe }};
-var options = {
+var byUserOptions = {
   chart: {
     renderTo: 'chart',
     zoomType: 'xy',
@@ -68,7 +69,7 @@ var options = {
 };
 
 for (entry in logCountsByUser) {
-  options.series[0].data.push({
+  byUserOptions.series[0].data.push({
     name: logCountsByUser[entry][0],
     y: logCountsByUser[entry][1],
     color: getColor()
@@ -77,7 +78,7 @@ for (entry in logCountsByUser) {
 
 
 $(document).ready(function () {
-  chart = new Highcharts.Chart(options);                  
+  chart = new Highcharts.Chart(byUserOptions);
 });
 </script>
 {% endblock graph_js %}
