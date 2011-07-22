@@ -104,7 +104,6 @@ def max_value(data):
     return max(data, key=get_max)[1]
     
 @register.filter
-@stringfilter
 def to_json(value):
     return json.dumps(value)
 

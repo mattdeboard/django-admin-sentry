@@ -32,7 +32,7 @@ var getData = function (nestedArray) {
   };
   return arr;
 };
-var logDates = {{ log_dates.points|safe }};
+var logDates = {{ log_dates.points|to_json }};
 var maxCount = parseInt({{ log_dates.max_count }});
 var chart;
 $(document).ready(function () {
