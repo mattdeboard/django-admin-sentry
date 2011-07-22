@@ -1,0 +1,90 @@
+{% extends 'sawmill/base.html' %}
+{% load helpertags %}
+
+{% block graph_js %}
+<script type="text/javascript">
+var getColor = function () {
+  var colorArray = ['#730046', '#feca80', '#e88801', '#bfbb11', '#7ba012', 
+                    '#ffc200', '#b28900', '#fed2bf', '#c93c00'];
+  return colorArray[Math.ceil(Math.random()*colorArray.length)];
+};
+
+var chart;
+var logCountsByUser = {{ edit_counts|safe }};
+var editors = {{ editors|safe }};
+var options = {
+  chart: {
+    renderTo: 'chart',
+    zoomType: 'xy',
+    backgroundColor: {
+      linearGradient: [350, 0, 500, 500],
+      stops: [
+        [0, 'rgb(232, 136, 1)'],
+        [1, 'rgb(254, 202, 128)']]
+    },
+    height: 200
+  },
+  
+  title: {
+    text: 'User Activity',
+    style: {
+      color: '#fff'
+    }
+  },
+  
+  xAxis: {
+    categories: editors,
+    title: {
+      text: false
+    }
+  },
+
+  yAxis: {
+    title: {
+      text: "# of Events",
+      style: {
+        color: '#fff'
+      }
+    },
+  },
+    
+  series: [{
+    name: "Edits by User",
+    type: "bar",
+    data: [],
+    title: {
+      text: false
+    }
+  }],
+  legend: {
+    enabled: false
+  },
+  tooltip: {
+    formatter: function () {
+      return "User: <b>" + this.x + "</b>\n" + "Events: <b>" + this.y + 
+        "</b>";
+    }
+  }
+};
+
+for (entry in logCountsByUser) {
+  options.series[0].data.push({
+    name: logCountsByUser[entry][0],
+    y: logCountsByUser[entry][1],
+    color: getColor()
+  });
+};
+
+
+$(document).ready(function () {
+  chart = new Highcharts.Chart(options);                  
+});
+</script>
+{% endblock graph_js %}
+{% block main %}
+<div id="chart">
+</div>
+Number of edits: {{ results|length }}      
+
+
+{% endblock main %}

@@ -93,13 +93,18 @@ def extract_user(log):
     return log.user
     
 def get_max(entry):
-    '''
-    Key func for the max call, to return the highest count with a 10%
-    upper cushion.
-    '''
     return entry[1]
+
+@register.filter
+def max_value(data):
+    '''
+    Takes an iterator with nested iterators, each inner object containing a
+    string and an int, and returns the inner obj with the largest int.
+    '''
+    return max(data, key=get_max)[1]
     
 @register.filter
+@stringfilter
 def to_json(value):
     return json.dumps(value)
 

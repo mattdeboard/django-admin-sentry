@@ -1,4 +1,5 @@
 import itertools
+import json
 
 from django.contrib import messages
 from django.contrib.admin.models import LogEntry
@@ -14,7 +15,6 @@ from sawmill.templatetags.helpertags import extract_user
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 
-@cache_page(300)
 @login_required(login_url='/sawmill/login/')
 def index(request):
     # needs superuser verification
@@ -66,10 +66,12 @@ def obj_overview(request, model, obj_id):
     # needs superuser check
     qs = LogEntry.objects.filter(content_type__id=model).\
          filter(object_id=obj_id)
-    log_group = [[log, len(list(group))] for log, group in \
-                 itertools.groupby(qs, key=extract_user)]
-    return render_to_response('sawmill/index.html',
-                              {'editors': [i[0] for i in log_group],
-                               'edit_counts': log_group,
+    log_group = [[str(user.username), len(list(group))] for user, group\
+                 in itertools.groupby(qs, key=extract_user)]
+    editors = json.dumps([key[0] for key in log_group])
+    return render_to_response('sawmill/obj.html',
+                              {'editors': editors,
+                               'edit_counts': json.dumps(log_group),
                                'results': qs},
                               context_instance=RequestContext(request))
+
