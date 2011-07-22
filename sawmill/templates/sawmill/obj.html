@@ -2,8 +2,19 @@
 {% load helpertags %}
 
 {% block graph_js %}
-
+{% with results|log_dates as log_dates %}
 <script type="text/javascript">
+var getData = function (nestedArray) {
+  var arr = new Array;
+  for (entry in nestedArray) {
+    arr.push([nestedArray[entry][0],
+              nestedArray[entry][1]]);
+  };
+  return arr;
+};
+var logDates = {{ log_dates.points|to_json }};
+var maxCount = parseInt({{ log_dates.max_count }});
+
 var getColor = function () {
   var colorArray = ['#730046', '#feca80', '#bfbb11', '#7ba012', 
                     '#ffc200', '#b28900', '#fed2bf', '#c93c00'];
@@ -12,6 +23,7 @@ var getColor = function () {
 
 var chart;
 var logCountsByUser = {{ edit_counts|safe }};
+var maxCount = parseInt({{ log_dates.max_count }});
 var editors = {{ editors|safe }};
 var byUserOptions = {
   chart: {
@@ -76,11 +88,75 @@ for (entry in logCountsByUser) {
   });
 };
 
+var byObjOptions = {
+  chart: {
+    renderTo: 'chart',
+    zoomType: 'xy',
+    backgroundColor: {
+      linearGradient: [350, 0, 500, 500],
+      stops: [
+        [0, 'rgb(232, 136, 1)'],
+        [1, 'rgb(254, 202, 128)']]
+    },
+    height: 200
+  },
+  
+  title: {
+    text: 'User Activity',
+    style: {
+      color: '#fff'
+    }
+  },
+  
+  xAxis: {
+    type: 'datetime',
+    title: {
+      text: false
+    },
+    dateTimeLabelFormats: {
+      second: '%H:%M:%S',
+      minute: '%H:%M',
+      hour: '%d %b %H:%M',
+      day: '%e. %b',
+      week: '%e. %b',
+      month: '%b \'%y',
+      year: '%Y'
+    }
+  },
+  
+  yAxis: {
+    title: {
+      text: "# of Events",
+      style: {
+        color: '#fff'
+      }
+    },
+    min: 0,
+    max: maxCount
+  },
+  
+  series: [{
+    name: "Log Entries",
+    type: 'area',
+    data: getData(logDates),
+    color: '#730046',
+    title: {
+      text: false
+    }
+  }],
+  
+  legend: {
+    enabled: false
+  }
+};
+
+var options = byUserOptions;
 
 $(document).ready(function () {
   chart = new Highcharts.Chart(byUserOptions);
 });
 </script>
+{% endwith %}
 {% endblock graph_js %}
 {% block main %}
 <div id="chart">
