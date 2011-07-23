@@ -158,21 +158,21 @@ $(document).ready(function () {
       $("#chart").attr("chartby", function () {
           console.log(chartType);
           chartType = (chartType == 'user' ? 'obj' : 'user');
+          makeChart();
       });
   });
   
-  $("#chart").bind('change', function () {
-    alert("It changed buddy");
-  });
   var getOptions = function () {
     console.log($(chart).attr("chartby"));
     return chartType =="obj" ? byObjOptions : byUserOptions;
   };
 
-  var options = getOptions();
-  chart = new Highcharts.Chart(options);
+  var makeChart = function () {
+      options = getOptions();
+      chart = new Highcharts.Chart(options);
+  };
 
-
+  var chart1 = makeChart();
 });
 
 </script>
