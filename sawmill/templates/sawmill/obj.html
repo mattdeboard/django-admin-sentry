@@ -4,14 +4,6 @@
 {% block graph_js %}
 {% with results|log_dates as log_dates %}
 <script type="text/javascript">
-var getData = function (nestedArray) {
-  var arr = new Array;
-  for (entry in nestedArray) {
-    arr.push([nestedArray[entry][0],
-              nestedArray[entry][1]]);
-  };
-  return arr;
-};
 var logDates = {{ log_dates.points|to_json }};
 var maxCount = parseInt({{ log_dates.max_count }});
 
@@ -138,7 +130,7 @@ var byObjOptions = {
   series: [{
     name: "Log Entries",
     type: 'area',
-    data: getData(logDates),
+    data: logDates,
     color: '#730046',
     title: {
       text: false
