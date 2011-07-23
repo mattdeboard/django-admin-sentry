@@ -150,13 +150,15 @@ var byObjOptions = {
   }
 };
 
+var chartType = 'user';
 
 $(document).ready(function () {
   
   $(".chartswitch").bind('click', function () {
-    $("#chart").attr("chartby", function () {
-      return $("#chart").attr("chartby")=="user" ? "obj":"user";
-    });
+      $("#chart").attr("chartby", function () {
+          console.log(chartType);
+          chartType = (chartType == 'user' ? 'obj' : 'user');
+      });
   });
   
   $("#chart").bind('change', function () {
@@ -164,18 +166,20 @@ $(document).ready(function () {
   });
   var getOptions = function () {
     console.log($(chart).attr("chartby"));
-    return $("#chart").attr("chartby")=="obj" ? byObjOptions : byUserOptions;
+    return chartType =="obj" ? byObjOptions : byUserOptions;
   };
 
   var options = getOptions();
   chart = new Highcharts.Chart(options);
+
+
 });
 
 </script>
 {% endwith %}
 {% endblock graph_js %}
 {% block main %}
-<div id="chart" chartby="user">
+<div id="chart">
 </div>
 <button class="chartswitch" type="button">Change Chart Type</button>
 {% with results|log_dates as log_dates %}
