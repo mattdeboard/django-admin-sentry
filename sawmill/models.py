@@ -30,16 +30,17 @@ class InstanceLog(object):
         return t[1]
 
     def first_edit(self):
-        self.query[0]
+        return self.query[0].action_time
 
     def most_recent_edit(self):
-        self.query[self.count-1]
+        return self.query[self.count-1].action_time
 
     def num_edits_by(self, reverse=False):
         # returns username of user who has contributed most revisions to
         # the instance. if reverse == True, returns username of who has
         # contributed LEAST.
-        res = self.get_editors().sort(key=self._sort_by_user)
+        res = self.get_editors()
+        res.sort(key=self._sort_by_user)
         if reverse:
             res.reverse()
         return res[0][0]
