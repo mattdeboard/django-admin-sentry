@@ -41,7 +41,7 @@ var byUserOptions = {
     categories: editors,
     title: {
       text: false
-    }
+    },
   },
 
   yAxis: {
@@ -177,7 +177,7 @@ $(document).ready(function () {
 </div>
 <div class="object">
   <h1 id="logname">
-    <a href="{{ log_group.admin_url }}">{{ log_group.name }}</a>
+    <a href="{{ log_group.admin_url }}">{{ log_group.name|capfirst }}</a>
   </h1>
   <span class="chartbutton">
     <a class="chartswitch" href="#">Change Chart Type</a>
