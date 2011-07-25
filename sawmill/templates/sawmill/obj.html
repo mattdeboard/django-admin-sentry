@@ -181,6 +181,6 @@ Most recent edit: {{ log_dates.points|get_date:0 }}<br />
 Most edits by: {{ edit_counts|max_value:0 }}<br />
   {% endwith %}
 {% for result in results %}
-Name of Item: {{ result }}<br />
+Name of Item: {{ result.object_repr }}<br />
 {% endfor %}
 {% endblock main %}
