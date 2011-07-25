@@ -70,3 +70,6 @@ class InstanceLog(object):
 
     def editors(self):
         return [u[0] for u in self.get_editors()]
+
+    def admin_url(self):
+        return self.query[0].get_admin_url()

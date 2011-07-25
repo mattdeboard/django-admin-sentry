@@ -402,7 +402,7 @@ a.userlink:hover, a.objlink:hover {
     font-weight: bold;
 }
 
-.paging-endless li a {
+.paging-endless li a, .chartswitch {
     display: inline-block;
     padding: 6px 8px 6px 8px;
     color: #000;
@@ -421,13 +421,14 @@ a.userlink:hover, a.objlink:hover {
     font-variant: small-caps;
 }
 
-.paging-endless li a:hover {
+.paging-endless li a:hover, .chartswitch:hover {
     color: white;
     text-shadow: #8c2a00;
     background: -webkit-gradient(linear, left top, left bottom, from(#feca80), to(#e88801)); /* for webkit browsers */
     background: -moz-linear-gradient(top,  #feca80,  #e88801); /* for firefox 3.6+ */
     font-weight: bold;
     font-variant: small-caps;
+    cursor: "pointer";
 }
 
 /* End paging style */
@@ -435,7 +436,7 @@ a.userlink:hover, a.objlink:hover {
 /* Chart style */
 
 div#chart {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 tspan {
@@ -443,3 +444,49 @@ tspan {
     font-family: "Oswald", sans-serif;
 }
 
+/* Object view style */
+.object {
+    font-family: "Oswald", sans-serif;
+    color: #444;
+    position: relative;
+}
+
+.chartbutton {
+    margin-bottom: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+.logcount {
+    float: right;
+    margin-top: 36px;
+    text-align: center;
+    background-color: #c5c5c5;
+    padding: 4.75px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-box-shadow: inset 0 1px 1px #666;
+    -webkit-box-shadow: inset 0 1px 1px #666;
+}
+
+.logcount h1 {
+    color: #730046;
+}
+
+#logname a {
+    color: #444;
+}
+
+#logname a:hover {
+    color: #730046;
+}
+    
+#logname {
+    display: inline;
+    line-height: 11px;
+}    
+
+/* End object view style */

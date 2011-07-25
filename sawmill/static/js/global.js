@@ -13,6 +13,15 @@ $(document).ready(function () {
     function () {
       $("body").css("cursor", "default");
     });
+
+  $(".chartswitch").hover(
+    function () {
+      $("body").css("cursor", "pointer");
+    },
+    
+    function () {
+      $("body").css("cursor", "default");
+    });
 });
 
 
