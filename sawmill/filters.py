@@ -1,3 +1,6 @@
+import itertools
+import logging
+
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.models import User
 from django.utils.datastructures import SortedDict
@@ -46,10 +49,16 @@ class ChoiceWidget(Widget):
                            column=column,))
 
         for key, val in choices.iteritems():
-            count = self.filter.get_count(key)
             key = unicode(key)
+
+            if self.filter.label == "Object":
+                count, val = val[0], val[1]
+            else:
+                count = self.filter.get_count(key)
+
             if len(val) >= 20:
                 val = val[:17] + "..."
+                
             output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)'
                           's&amp;%(column)s=%(key)s">%(value)s<span class="'
                           'count">%(count)s</span></a></li>' %
@@ -62,7 +71,6 @@ class ChoiceWidget(Widget):
         output.append('</ul>')
         return mark_safe('\n'.join(output))
                                                                   
-                      
 
 class BaseFilter(object):
     label = ''
@@ -126,8 +134,34 @@ class UserFilter(BaseFilter):
 
 class ObjectFilter(BaseFilter):
     label = 'Object'
-    column = 'object_repr'
+    column = 'object_id'
 
+    def get_choices(self):
+        logdict = SortedDict([])
+        logs = LogEntry.objects.all()
+        res = [(len(list(group)), obj) for obj, group in itertools.groupby\
+               (logs, key=self.get_objs)]
+        # sort the list of results, then reverse it to get them in order by
+        # number of entries. Then, store the value of the top 10 entries.
+        # Then, reverse THAT list to get them in reverse order, so they're
+        # stored in the SortedDict in descending order. :)
+        res.sort()
+        res.reverse()
+        res = res[:10]
+        res.reverse()
+        for pair in res:
+            log = LogEntry.objects.filter(object_repr=pair[1])[0]
+            logdict.insert(0, "%s+%s" % (log.content_type.id, log.object_id),
+                           pair)
+            
+        return logdict
+
+    def get_objs(self, log):
+        return log.object_repr
+
+    def get_count(self, index):
+        return self.get_choices()[index][0]
+    
 
 class ActionFilter(BaseFilter):
     label = 'Action'

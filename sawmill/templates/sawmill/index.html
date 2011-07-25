@@ -13,7 +13,7 @@
 {% for filter in filters %}
 <div class="sidebar-module sidebar-module-{{ filter.column }}">
   {% if filter.show_label %}
-  <h2{% if filter.label == "User" %} title="Users with no log entries on record will not be shown here"{% endif %}>{% trans filter.label %}</h2>
+  <h2{% if filter.label == "User" %} title="Users with no log entries on record will not be shown here"{% endif %} {% if filter.label == "Object" %} title="Top ten most active objects"{% endif %}>{% trans filter.label %}</h2>
   {% endif %}
   <form method="get" action="{{ filter.get_query_string|safe }}">
     {{ filter.render }}
@@ -105,7 +105,7 @@ $(document).ready(function () {
 <div id="chart">
 </div>
 
-{% paginate results from request as results per_page 10 %}
+{% paginate results from request as results per_page 25 %}
 <div class="paging-wrap">
   {{ results.paging }}
 </div><!-- .paging-wrap -->
