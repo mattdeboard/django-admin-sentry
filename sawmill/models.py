@@ -67,3 +67,6 @@ class InstanceLog(object):
 
     def _extract_date(self, log):
         return log.action_time.date()
+
+    def editors(self):
+        return [u[0] for u in self.get_editors()]
