@@ -8,9 +8,10 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
-from sawmill.helpers import *
-from sawmill.forms import ASLogin
 from sawmill.decorators import login_required
+from sawmill.forms import ASLogin
+from sawmill.helpers import *
+from sawmill.models import InstanceLog
 from sawmill.templatetags.helpertags import extract_user
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
@@ -64,14 +65,11 @@ def as_logout(request):
 @login_required(login_url='/sawmill/login')
 def obj_overview(request, model, obj_id):
     # needs superuser check
-    qs = LogEntry.objects.filter(content_type__id=model).\
-         filter(object_id=obj_id)
-    log_group = [[str(user.username), len(list(group))] for user, group\
-                 in itertools.groupby(qs, key=extract_user)]
-    editors = json.dumps([key[0] for key in log_group])
+    log_group = InstanceLog(model=model, obj_id=obj_id)
+    editors = json.dumps([res[0] for res in log_group.get_editors()])
     return render_to_response('sawmill/obj.html',
                               {'editors': editors,
-                               'edit_counts': json.dumps(log_group),
-                               'results': qs},
+                               'edit_counts': json.dumps(log_group.get_editors()),
+                               'log_group': log_group},
                               context_instance=RequestContext(request))
 

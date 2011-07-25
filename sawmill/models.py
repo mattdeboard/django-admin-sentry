@@ -1,4 +1,5 @@
 import itertools
+import math
 
 from django.contrib.admin.models import LogEntry
 
@@ -9,24 +10,59 @@ class InstanceLog(object):
     in a group of log entries for a common model instance.
 
     '''
-    def __init__(self, obj_id=None):
+    def __init__(self, model=None, obj_id=None):
         self.obj_id = obj_id
-        self.query = LogEntry.objects.filter(id=self.obj_id)
-        self.name, self.count = self.get_obj_info()
+        self.query = LogEntry.objects.filter(object_id=self.obj_id).filter\
+                     (content_type__id=model).order_by('action_time')
+        self.count, self.name = self.get_obj_info()
         
     def get_obj_info(self):
         return (self.query.count(), self.query[0].object_repr.split(' -- ')[0])
                 
     def get_editors(self):
-        return [(user, len(list(group))) for user, group in itertools.groupby\
-                (self.query, key=self._get_user)]
+        return [(user.username, len(list(group))) for user, group in itertools\
+                .groupby(self.query, key=self._get_user)]
 
     def _get_user(self, logitem):
         return logitem.user
 
-        
-    
+    def _sort_by_user(self, t):
+        return t[1]
 
-    
+    def first_edit(self):
+        self.query[0]
+
+    def most_recent_edit(self):
+        self.query[self.count-1]
+
+    def num_edits_by(self, reverse=False):
+        # returns username of user who has contributed most revisions to
+        # the instance. if reverse == True, returns username of who has
+        # contributed LEAST.
+        res = self.get_editors().sort(key=self._sort_by_user)
+        if reverse:
+            res.reverse()
+        return res[0][0]
+
+    def log_dates(self):
+        '''
+        Returns a list of 3-tuples. Each 3-tuple contains (year, month, day) of
+        the LogEntry's creation date.
         
-        
+        '''
+        at = 'action_time'
+        dates = []
+        count = 1
+        for date, group in itertools.groupby(self.query, key=self._extract_date):
+            dates.append([int(date.strftime("%s")) * 1000, len(list(group))])
+            
+        if dates:
+            count = math.ceil(max(dates, key=self._get_max_date)[1] * 1.1)
+
+        return {'points': dates, 'max_count': count}
+
+    def _get_max_date(self, entry):
+        return entry[1]
+
+    def _extract_date(self, log):
+        return log.action_time.date()

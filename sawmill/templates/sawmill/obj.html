@@ -2,7 +2,7 @@
 {% load helpertags %}
 
 {% block graph_js %}
-{% with results|log_dates as log_dates %}
+{% with log_group.log_dates as log_dates %}
 <script type="text/javascript">
 var logDates = {{ log_dates.points|to_json }};
 var maxCount = parseInt({{ log_dates.max_count }});
@@ -174,13 +174,14 @@ $(document).ready(function () {
 <div id="chart" chartby="user">
 </div>
 <button class="chartswitch" type="button">Change Chart Type</button>
-  {% with results|log_dates as log_dates %}
-Number of edits: {{ results|length }}<br />
-First edit: {{ log_dates.points|get_date }}<br />
-Most recent edit: {{ log_dates.points|get_date:0 }}<br />
-Most edits by: {{ edit_counts|max_value:0 }}<br />
-  {% endwith %}
-{% for result in results %}
-Name of Item: {{ result.object_repr }}<br />
-{% endfor %}
+Number of edits: {{ log_group.count }}
+<br />
+First edit: {{ log_group.first_edit }}
+<br />
+Most recent edit: {{ log_group.most_recent_edit }}
+<br />
+Most edits by: {{ log_group.num_edits_by }}
+<br />
+Name of Item: {{ log_group.name }}
+<br />
 {% endblock main %}
