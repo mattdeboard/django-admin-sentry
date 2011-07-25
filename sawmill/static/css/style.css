@@ -436,7 +436,7 @@ a.userlink:hover, a.objlink:hover {
 /* Chart style */
 
 div#chart {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
 tspan {
@@ -457,7 +457,7 @@ tspan {
 }
 
 #stats {
-    margin-top: 5px;
+    margin-top: 20px;
     float: left;
 }
 
@@ -498,6 +498,7 @@ tspan {
 
 #logname a {
     color: #444;
+    letter-spacing: 2px;
 }
 
 #logname a:hover {
