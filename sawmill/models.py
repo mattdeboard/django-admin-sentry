@@ -35,7 +35,7 @@ class InstanceLog(object):
     def most_recent_edit(self):
         return self.query[self.count-1].action_time
 
-    def num_edits_by(self, reverse=False):
+    def num_edits_by(self, reverse=True):
         # returns username of user who has contributed most revisions to
         # the instance. if reverse == True, returns username of who has
         # contributed LEAST.

@@ -175,26 +175,35 @@ $(document).ready(function () {
 <div id="chart">
 </div>
 <div class="object">
-  <h1 id="logname">
-    <a href="{{ log_group.admin_url }}">{{ log_group.name|capfirst }}</a>
-  </h1>
-  <span class="chartbutton">
-    <a class="chartswitch" href="#">Change Chart Type</a>
-  </span>
-  <div class="logcount">
-    <p>Total Actions:</p>
-    <h1>{{ log_group.count }}</h1>
-  </div><!-- .log.count -->
-  
-  <br />
-  First edit: {{ log_group.first_edit }}
-  <br />
-  Most recent edit: {{ log_group.most_recent_edit }}
-  <br />
-  Most edits by: {{ log_group.num_edits_by }}
-  <br />
-  Name of Item: {{ log_group.name }}
-  <br />
-  All Editors: {% for editor in log_group.editors %}<br />{{ editor }}{% endfor %}
+  <div id="obj_header">
+    <h1 id="logname">
+      <a href="{{ log_group.admin_url }}">{{ log_group.name|capfirst }}</a>
+    </h1>
+    <span class="chartbutton">
+      <a class="chartswitch" href="#">Change Chart Type</a>
+    </span>
+    <div class="logcount">
+      <p>Total Actions:</p>
+      <h1>{{ log_group.count }}</h1>
+    </div><!-- .log.count -->
+  </div><!-- #obj_header -->
+  <div id="stats">
+    <ul class="stat cats">
+      <li>First edit:</li> 
+      <li>Most recent edit:</li> 
+      <li>Most edits by:</li> 
+      <li>Name of Item:</li> 
+      <li>All Editors:</li>
+    </ul><!-- .stat.cats -->
+    <ul class="stat answers">
+      <li>{{ log_group.first_edit }}</li>
+      <li>{{ log_group.most_recent_edit }}</li>
+      <li>{{ log_group.num_edits_by }}</li>
+      <li>{{ log_group.name }}</li>
+      {% for editor in log_group.editors %}
+      <li>{{ editor }}</li>
+      {% endfor %}
+    </ul><!-- .stat.answers -->
+  </div><!-- #stats -->
 </div><!-- .object.view -->
 {% endblock main %}

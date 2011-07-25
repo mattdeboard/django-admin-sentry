@@ -451,6 +451,26 @@ tspan {
     position: relative;
 }
 
+.object ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+#stats {
+    margin-top: 5px;
+    float: left;
+}
+
+#stats .cats {
+    float: left;
+    margin-right: 20px;
+}
+
+#stats .answers {
+    float: right;
+    color: #730046;
+}
+
 .chartbutton {
     margin-bottom: 5px;
     position: absolute;
