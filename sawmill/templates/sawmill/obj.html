@@ -4,14 +4,6 @@
 {% block graph_js %}
 {% with results|log_dates as log_dates %}
 <script type="text/javascript">
-var getData = function (nestedArray) {
-  var arr = new Array;
-  for (entry in nestedArray) {
-    arr.push([nestedArray[entry][0],
-              nestedArray[entry][1]]);
-  };
-  return arr;
-};
 var logDates = {{ log_dates.points|to_json }};
 var maxCount = parseInt({{ log_dates.max_count }});
 
@@ -138,7 +130,7 @@ var byObjOptions = {
   series: [{
     name: "Log Entries",
     type: 'area',
-    data: getData(logDates),
+    data: logDates,
     color: '#730046',
     title: {
       text: false
@@ -150,27 +142,31 @@ var byObjOptions = {
   }
 };
 
-
+var chartType = "obj";
 $(document).ready(function () {
   
-  $(".chartswitch").bind('click', function () {
-    $("#chart").attr("chartby", function () {
-      return $("#chart").attr("chartby")=="user" ? "obj":"user";
-    });
-  });
-  
-  $("#chart").bind('change', function () {
-    alert("It changed buddy");
-  });
   var getOptions = function () {
-    console.log($(chart).attr("chartby"));
-    return $("#chart").attr("chartby")=="obj" ? byObjOptions : byUserOptions;
+    return chartType == "obj" ? byObjOptions : byUserOptions;
   };
+  
+  var makeChart = function () {
+    var options = getOptions();
+    return new Highcharts.Chart(options);
+  };
+  
+  
+  $(".chartswitch").bind('click', function () {
+    if (chartType == "user") {
+      chartType = "obj"; 
+    } else {
+      chartType = "user";
+    }
+    return makeChart();
+  });
 
-  var options = getOptions();
-  chart = new Highcharts.Chart(options);
+  chart = new makeChart();
+
 });
-
 </script>
 {% endwith %}
 {% endblock graph_js %}
@@ -178,10 +174,13 @@ $(document).ready(function () {
 <div id="chart" chartby="user">
 </div>
 <button class="chartswitch" type="button">Change Chart Type</button>
-{% with results|log_dates as log_dates %}
+  {% with results|log_dates as log_dates %}
 Number of edits: {{ results|length }}<br />
 First edit: {{ log_dates.points|get_date }}<br />
 Most recent edit: {{ log_dates.points|get_date:0 }}<br />
 Most edits by: {{ edit_counts|max_value:0 }}<br />
-{% endwith %}
+  {% endwith %}
+{% for result in results %}
+Name of Item: {{ result }}<br />
+{% endfor %}
 {% endblock main %}
