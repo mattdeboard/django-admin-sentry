@@ -21,7 +21,8 @@ def index(request):
     # needs superuser verification
     filters = []
     for filter_ in get_filters():
-        filters.append(filter_(request))
+        if filter_.label != "Object":
+            filters.append(filter_(request))
     qs = LogEntry.objects.all()
     
     if request.GET.get("user"):
@@ -65,11 +66,17 @@ def as_logout(request):
 @login_required(login_url='/sawmill/login')
 def obj_overview(request, model, obj_id):
     # needs superuser check
+    filters = []
+    for _filter in get_filters():
+        if _filter.label == "Object":
+            filters.append(_filter(request))
+
     log_group = InstanceLog(model=model, obj_id=obj_id)
     editors = json.dumps([res[0] for res in log_group.get_editors()])
     return render_to_response('sawmill/obj.html',
                               {'editors': editors,
                                'edit_counts': json.dumps(log_group.get_editors()),
-                               'log_group': log_group},
+                               'log_group': log_group,
+                               'filters': filters},
                               context_instance=RequestContext(request))
 
