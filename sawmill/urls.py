@@ -13,6 +13,5 @@ urlpatterns = patterns('',
         {'document_root':STATIC_ROOT},  name="media"),
     url(r'^login', views.as_login, name='login'),
     url(r'^logout', views.as_logout, name='logout'),
-    url(r'^activity/(?P<model>.*)/(?P<obj_id>.*)', views.obj_overview,
-        name='obj-view'),
+    url(r'^activity', views.obj_overview, name='obj-view'),
 )

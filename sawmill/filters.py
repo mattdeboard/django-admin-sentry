@@ -88,10 +88,13 @@ class ObjChoiceWidget(Widget):
             if len(val) >= 20:
                 val = val[:17] + "..."
 
-            output.append('<li%(active)s rel="%(key)s"><a href="/sawmill/activity/%(mod)s/%(obj)s">%(value)s<span class="c'
+            output.append('<li%(active)s rel="%(key)s"><a href="?&amp;model=%(m'
+                          'odel)s&amp;obj=%(obj)s">%(value)s<span class="c'
                           'ount">%(count)s</span></a></li>' %
                           dict(active=value == key and ' class="active"' or '',
-                               key=key, mod=m, obj=o,
+                               key=key,
+                               model=m,
+                               obj=o,
                                value=val,
                                count=count,))
         output.append('</ul>')
@@ -160,8 +163,10 @@ class UserFilter(BaseFilter):
 
 class ObjectFilter(BaseFilter):
     label = 'Object'
-    column = 'object_id'
+    column = 'object'
     widget = ObjChoiceWidget
+    model = '' # model id
+    obj = '' # object id
 
     def get_choices(self):
         logdict = SortedDict([])
@@ -182,6 +187,19 @@ class ObjectFilter(BaseFilter):
                            pair)
             
         return logdict
+
+    # def get_query_string(self):
+    #     column = self.column
+    #     model = self.model
+    #     obj = self.obj
+    #     query_dict = self.request.GET.copy()
+    #     if 'p' in query_dict:
+    #         # Remove any pagination info in querystring
+    #         del query_dict['p']
+    #     for i in (column, model, obj):
+    #         if i in query_dict:
+    #             del query_dict[i]
+    #     return '?&model=%s&object=%s' % (model, obj)
 
     def get_objs(self, log):
         return log.object_repr

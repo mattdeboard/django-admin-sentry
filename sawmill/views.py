@@ -64,18 +64,22 @@ def as_logout(request):
     return render_to_response("sawmill/logout.html")
 
 @login_required(login_url='/sawmill/login')
-def obj_overview(request, model, obj_id):
+def obj_overview(request):
     # needs superuser check
+    query_dict = request.GET.copy()
+    model = query_dict['model']
+    obj_id = query_dict['obj']
     filters = []
     for _filter in get_filters():
         if _filter.label == "Object":
             filters.append(_filter(request))
-
+            
     log_group = InstanceLog(model=model, obj_id=obj_id)
     editors = json.dumps([res[0] for res in log_group.get_editors()])
+    edit_counts = json.dumps(log_group.get_editors())
     return render_to_response('sawmill/obj.html',
                               {'editors': editors,
-                               'edit_counts': json.dumps(log_group.get_editors()),
+                               'edit_counts': edit_counts,
                                'log_group': log_group,
                                'filters': filters},
                               context_instance=RequestContext(request))
