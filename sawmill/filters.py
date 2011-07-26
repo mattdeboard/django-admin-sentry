@@ -88,11 +88,10 @@ class ObjChoiceWidget(Widget):
             if len(val) >= 20:
                 val = val[:17] + "..."
 
-            output.append('<li%(active)s rel="%(key)s"><a href="{% url obj-view'
-                          ' %(model_id)s %(obj_id)s %}">%(value)s<span class="c'
+            output.append('<li%(active)s rel="%(key)s"><a href="/sawmill/activity/%(mod)s/%(obj)s">%(value)s<span class="c'
                           'ount">%(count)s</span></a></li>' %
                           dict(active=value == key and ' class="active"' or '',
-                               key=key, model_id=m, obj_id=o,
+                               key=key, mod=m, obj=o,
                                value=val,
                                count=count,))
         output.append('</ul>')
@@ -162,6 +161,7 @@ class UserFilter(BaseFilter):
 class ObjectFilter(BaseFilter):
     label = 'Object'
     column = 'object_id'
+    widget = ObjChoiceWidget
 
     def get_choices(self):
         logdict = SortedDict([])
