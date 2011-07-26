@@ -20,11 +20,15 @@ class InstanceLog(object):
         return (self.query.count(), self.query[0].object_repr.split(' -- ')[0])
                 
     def get_editors(self):
-        return [(user.username, len(list(group))) for user, group in itertools\
+        return [(str(user), len(list(group))) for user, group in itertools\
                 .groupby(self.query, key=self._get_user)]
 
     def _get_user(self, logitem):
-        return logitem.user
+        try:
+            res = logitem.user
+        except:
+            res = None
+        return res
 
     def _sort_by_user(self, t):
         return t[1]
