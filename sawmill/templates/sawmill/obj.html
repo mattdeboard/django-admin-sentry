@@ -1,5 +1,24 @@
 {% extends 'sawmill/base.html' %}
 {% load helpertags %}
+{% load i18n %}
+
+{% block sidebar %}
+{% if chart_url %}
+<h2>{% trans "Last 24 Hours" %}</h2>
+<img src="{{ chart_url }}" class="chart" alt="chart"/>
+{% endif %}
+
+{% for filter in filters %}
+<div class="sidebar-module sidebar-module-{{ filter.column }}">
+  {% if filter.show_label %}
+  <h2{% if filter.label == "User" %} title="Users with no log entries on record will not be shown here"{% endif %} {% if filter.label == "Object" %} title="Top ten most active objects"{% endif %}>{% trans filter.label %}</h2>
+  {% endif %}
+  <form method="get" action="{{ filter.get_query_string|safe }}">
+    {{ filter.render }}
+  </form>
+</div>
+{% endfor %}
+{% endblock sidebar %}
 
 {% block graph_js %}
 {% with log_group.log_dates as log_dates %}
@@ -42,6 +61,7 @@ var byUserOptions = {
     title: {
       text: false
     },
+
   },
 
   yAxis: {
@@ -51,8 +71,8 @@ var byUserOptions = {
         color: '#fff'
       }
     },
-    min: 0,
-    tickInterval: 1,
+    min: 1,
+    tickInterval: 2,
   },
     
   series: [{
