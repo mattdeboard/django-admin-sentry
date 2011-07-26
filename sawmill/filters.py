@@ -70,7 +70,34 @@ class ChoiceWidget(Widget):
                                count=count,))
         output.append('</ul>')
         return mark_safe('\n'.join(output))
-                                                                  
+
+
+class ObjChoiceWidget(Widget):
+    def render(self, value, **kwargs):
+        choices = self.filter.get_choices()
+        query_string = self.get_query_string()
+        column = self.filter.get_query_param()
+
+        output = ['<ul class="%s-list filter-list" rel="%s">' %
+                  (self.filter.column, column)]
+
+        for key, val in choices.iteritems():
+            key = unicode(key)
+            m, o = key.split('+')[0], key.split('+')[1]
+            count, val = val[0], val[1]
+            if len(val) >= 20:
+                val = val[:17] + "..."
+
+            output.append('<li%(active)s rel="%(key)s"><a href="{% url obj-view'
+                          ' %(model_id)s %(obj_id)s %}">%(value)s<span class="c'
+                          'ount">%(count)s</span></a></li>' %
+                          dict(active=value == key and ' class="active"' or '',
+                               key=key, model_id=m, obj_id=o,
+                               value=val,
+                               count=count,))
+        output.append('</ul>')
+        return mark_safe('\n'.join(output))
+                
 
 class BaseFilter(object):
     label = ''
