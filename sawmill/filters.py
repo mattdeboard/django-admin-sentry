@@ -3,6 +3,7 @@ import logging
 
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
@@ -87,7 +88,7 @@ class ObjChoiceWidget(Widget):
             count, val = val[0], val[1]
             if len(val) >= 20:
                 val = val[:17] + "..."
-
+                    
             output.append('<li%(active)s rel="%(key)s"><a href="?&amp;model=%(m'
                           'odel)s&amp;obj=%(obj)s">%(value)s<span class="c'
                           'ount">%(count)s</span></a></li>' %
@@ -99,7 +100,7 @@ class ObjChoiceWidget(Widget):
                                count=count,))
         output.append('</ul>')
         return mark_safe('\n'.join(output))
-                
+                    
 
 class BaseFilter(object):
     label = ''
@@ -131,11 +132,9 @@ class BaseFilter(object):
         return '?' + query_dict.urlencode()
 
     def get_choices(self):
-        from sawmill import FilterValue
-        return SortedDict((l, l) for l in
-                FilterValue.objects.filter(key=self.column).values_list('value',
-                    flat=True).order_by('value'))
-
+        raise NotImplemented
+        return
+        
     def get_count(self):
         raise NotImplemented
         return
@@ -168,41 +167,49 @@ class ObjectFilter(BaseFilter):
     model = '' # model id
     obj = '' # object id
 
-    def get_choices(self):
-        logdict = SortedDict([])
-        logs = LogEntry.objects.all()
-        res = [(len(list(group)), obj) for obj, group in itertools.groupby\
-               (logs, key=self.get_objs)]
-        # sort the list of results, then reverse it to get them in order by
-        # number of entries. Then, store the value of the top 10 entries.
-        # Then, reverse THAT list to get them in reverse order, so they're
-        # stored in the SortedDict in descending order. :)
-        res.sort()
-        res.reverse()
-        res = res[:10]
-        res.reverse()
-        for pair in res:
-            log = LogEntry.objects.filter(object_repr=pair[1])[0]
-            logdict.insert(0, "%s+%s" % (log.content_type.id, log.object_id),
-                           pair)
+    # def get_choices(self):
+    #     logdict = SortedDict([])
+    #     logs = LogEntry.objects.all()
+    #     res = [(len(list(group)), obj) for obj, group in itertools.groupby\
+    #            (logs, key=self.get_objs)]
+    #     # sort the list of results, then reverse it to get them in order by
+    #     # number of entries. Then, store the value of the top 10 entries.
+    #     # Then, reverse THAT list to get them in reverse order, so they're
+    #     # stored in the SortedDict in descending order. :)
+    #     res.sort()
+    #     res.reverse()
+    #     res = res[:10]
+    #     res.reverse()
+    #     for pair in res:
+    #         log = LogEntry.objects.filter(object_repr=pair[1])[0]
+    #         logdict.insert(0, "%s+%s" % (log.content_type.id, log.object_id),
+    #                        pair)
             
+    #     return logdict
+
+    def get_choices(self):
+        logdict = SortedDict()
+        results = LogEntry.objects.raw(
+            """SELECT DISTINCT djl2.id, djl1.object_id, djl1.object_repr,
+                               djl1.content_type_id,
+                               COUNT(djl1.content_type_id) AS num_items
+               FROM django_admin_log AS djl1
+                   INNER JOIN django_admin_log AS djl2
+                   ON djl1.id=djl2.id
+               GROUP BY djl1.object_repr, djl1.content_type_id
+               ORDER BY num_items
+            """)
+        
+        for result in results:
+            name, objid, num, mod = (result.object_repr, result.object_id,
+                                     result.num_items, result.content_type_id)
+            logdict.insert(0,"%s+%s" % (mod, objid), (num, name))
+
         return logdict
-
-    # def get_query_string(self):
-    #     column = self.column
-    #     model = self.model
-    #     obj = self.obj
-    #     query_dict = self.request.GET.copy()
-    #     if 'p' in query_dict:
-    #         # Remove any pagination info in querystring
-    #         del query_dict['p']
-    #     for i in (column, model, obj):
-    #         if i in query_dict:
-    #             del query_dict[i]
-    #     return '?&model=%s&object=%s' % (model, obj)
-
-    def get_objs(self, log):
-        return log.object_repr
+        
+    
+    def get_num_items(self, r):
+        return r.num_items
 
     def get_count(self, index):
         return self.get_choices()[index][0]
