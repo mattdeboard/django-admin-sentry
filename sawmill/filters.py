@@ -131,11 +131,9 @@ class BaseFilter(object):
         return '?' + query_dict.urlencode()
 
     def get_choices(self):
-        from sawmill import FilterValue
-        return SortedDict((l, l) for l in
-                FilterValue.objects.filter(key=self.column).values_list('value',
-                    flat=True).order_by('value'))
-
+        raise NotImplemented
+        return
+        
     def get_count(self):
         raise NotImplemented
         return
@@ -168,39 +166,37 @@ class ObjectFilter(BaseFilter):
     model = '' # model id
     obj = '' # object id
 
+    # def get_choices(self):
+    #     logdict = SortedDict([])
+    #     logs = LogEntry.objects.all()
+    #     res = [(len(list(group)), obj) for obj, group in itertools.groupby\
+    #            (logs, key=self.get_objs)]
+    #     # sort the list of results, then reverse it to get them in order by
+    #     # number of entries. Then, store the value of the top 10 entries.
+    #     # Then, reverse THAT list to get them in reverse order, so they're
+    #     # stored in the SortedDict in descending order. :)
+    #     res.sort()
+    #     res.reverse()
+    #     res = res[:10]
+    #     res.reverse()
+    #     for pair in res:
+    #         log = LogEntry.objects.filter(object_repr=pair[1])[0]
+    #         logdict.insert(0, "%s+%s" % (log.content_type.id, log.object_id),
+    #                        pair)
+            
+    #     return logdict
+
     def get_choices(self):
         logdict = SortedDict([])
-        logs = LogEntry.objects.all()
-        res = [(len(list(group)), obj) for obj, group in itertools.groupby\
-               (logs, key=self.get_objs)]
-        # sort the list of results, then reverse it to get them in order by
-        # number of entries. Then, store the value of the top 10 entries.
-        # Then, reverse THAT list to get them in reverse order, so they're
-        # stored in the SortedDict in descending order. :)
-        res.sort()
-        res.reverse()
-        res = res[:10]
-        res.reverse()
-        for pair in res:
-            log = LogEntry.objects.filter(object_repr=pair[1])[0]
-            logdict.insert(0, "%s+%s" % (log.content_type.id, log.object_id),
-                           pair)
-            
+        logs = LogEntry.objects.values('object_repr').annotate(
+            num_logs=Count('object_repr')).order_by('object_repr')
+        results = sorted(logs)
+        for result in results:
+            logdict.insert(0, result['object_repr'], result['num_logs'])
+
         return logdict
-
-    # def get_query_string(self):
-    #     column = self.column
-    #     model = self.model
-    #     obj = self.obj
-    #     query_dict = self.request.GET.copy()
-    #     if 'p' in query_dict:
-    #         # Remove any pagination info in querystring
-    #         del query_dict['p']
-    #     for i in (column, model, obj):
-    #         if i in query_dict:
-    #             del query_dict[i]
-    #     return '?&model=%s&object=%s' % (model, obj)
-
+        
+    
     def get_objs(self, log):
         return log.object_repr
 
