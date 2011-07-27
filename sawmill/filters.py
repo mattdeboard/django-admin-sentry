@@ -3,6 +3,7 @@ import logging
 
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
@@ -87,7 +88,7 @@ class ObjChoiceWidget(Widget):
             count, val = val[0], val[1]
             if len(val) >= 20:
                 val = val[:17] + "..."
-
+                    
             output.append('<li%(active)s rel="%(key)s"><a href="?&amp;model=%(m'
                           'odel)s&amp;obj=%(obj)s">%(value)s<span class="c'
                           'ount">%(count)s</span></a></li>' %
@@ -99,7 +100,7 @@ class ObjChoiceWidget(Widget):
                                count=count,))
         output.append('</ul>')
         return mark_safe('\n'.join(output))
-                
+                    
 
 class BaseFilter(object):
     label = ''
@@ -187,18 +188,28 @@ class ObjectFilter(BaseFilter):
     #     return logdict
 
     def get_choices(self):
-        logdict = SortedDict([])
-        logs = LogEntry.objects.values('object_repr').annotate(
-            num_logs=Count('object_repr')).order_by('object_repr')
-        results = sorted(logs)
+        logdict = SortedDict()
+        results = LogEntry.objects.raw(
+            """SELECT DISTINCT djl2.id, djl1.object_id, djl1.object_repr,
+                               djl1.content_type_id,
+                               COUNT(djl1.content_type_id) AS num_items
+               FROM django_admin_log AS djl1
+                   INNER JOIN django_admin_log AS djl2
+                   ON djl1.id=djl2.id
+               GROUP BY djl1.object_repr, djl1.content_type_id
+               ORDER BY num_items
+            """)
+        
         for result in results:
-            logdict.insert(0, result['object_repr'], result['num_logs'])
+            name, objid, num, mod = (result.object_repr, result.object_id,
+                                     result.num_items, result.content_type_id)
+            logdict.insert(0,"%s+%s" % (mod, objid), (num, name))
 
         return logdict
         
     
-    def get_objs(self, log):
-        return log.object_repr
+    def get_num_items(self, r):
+        return r.num_items
 
     def get_count(self, index):
         return self.get_choices()[index][0]
