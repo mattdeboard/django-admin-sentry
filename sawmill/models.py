@@ -13,11 +13,11 @@ class InstanceLog(object):
     def __init__(self, model=None, obj_id=None):
         self.obj_id = obj_id
         self.query = LogEntry.objects.filter(object_id=self.obj_id).filter\
-                     (content_type__id=model).order_by('action_time')
+                     (content_type__id=model).order_by('user')
         self.count, self.name = self.get_obj_info()
         
     def get_obj_info(self):
-        return (self.query.count(), self.query[0].object_repr.split(' -- ')[0])
+        return (self.query.count(), self.query[0].object_repr)
                 
     def get_editors(self):
         return [(str(user), len(list(group))) for user, group in itertools\
