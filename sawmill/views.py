@@ -9,7 +9,7 @@ from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
 from sawmill.decorators import login_required
-from sawmill.forms import ASLogin
+from sawmill.forms import ASLogin, ContentDropDown
 from sawmill.helpers import *
 from sawmill.models import InstanceLog
 from sawmill.templatetags.helpertags import extract_user
@@ -66,14 +66,20 @@ def as_logout(request):
 @login_required(login_url='/sawmill/login')
 def obj_overview(request):
     # needs superuser check
-    query_dict = request.GET.copy()
-    model = query_dict['model']
-    obj_id = query_dict['obj']
     filters = []
+    query_dict = request.GET.copy()
+    model = query_dict['model'] or 19
+    obj_id = query_dict['obj'] or 94
+
+    if request.method == 'POST':
+        model = request.POST.copy()['dropdown']
+        obj_id = ''
+        
     for _filter in get_filters():
         if _filter.label == "Object":
             filters.append(_filter(request))
-            
+
+    form = ContentDropDown()
     log_group = InstanceLog(model=model, obj_id=obj_id)
     editors = json.dumps([res[0] for res in log_group.get_editors()])
     edit_counts = json.dumps(log_group.get_editors())
@@ -81,6 +87,7 @@ def obj_overview(request):
                               {'editors': editors,
                                'edit_counts': edit_counts,
                                'log_group': log_group,
-                               'filters': filters},
+                               'filters': filters,
+                               'dropdown': form},
                               context_instance=RequestContext(request))
 
