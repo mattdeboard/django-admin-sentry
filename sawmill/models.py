@@ -17,9 +17,9 @@ class InstanceLog(object):
                                          .filter(content_type__id=model)\
                                          .order_by('user')
         else:
-            q = LogEntry.objects.filter(content_type__id=model)\
+            self.query = LogEntry.objects.filter(content_type__id=model)\
                                          .order_by('user')
-            self.query = q[0]
+            
         self.count, self.name, self.name2 = self.get_obj_info()
         
     def get_obj_info(self):
