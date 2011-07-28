@@ -11,9 +11,15 @@ class InstanceLog(object):
 
     '''
     def __init__(self, model=None, obj_id=None):
-        self.obj_id = obj_id
-        self.query = LogEntry.objects.filter(object_id=self.obj_id).filter\
-                     (content_type__id=model).order_by('user')
+        if obj_id:
+            self.obj_id = obj_id
+            self.query = LogEntry.objects.filter(object_id=self.obj_id)\
+                                         .filter(content_type__id=model)\
+                                         .order_by('user')
+        else:
+            q = LogEntry.objects.filter(content_type__id=model)\
+                                         .order_by('user')
+            self.query = q[0]
         self.count, self.name, self.name2 = self.get_obj_info()
         
     def get_obj_info(self):
