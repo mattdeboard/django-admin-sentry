@@ -9,41 +9,20 @@ from sawmill import conf
 MINUTES_TO_CACHE = 60
 _FILTER_CACHE = None
 
-def get_filters(*args, **kwargs):
-    '''
-    Retrieve and import filters from conf.py.
-
-    args is any of: User, Action, Object.
-    
-    '''
+def get_filters():
     global _FILTER_CACHE
-
-    if not args:
-        args = ['User', 'Action']
-
-    if 'Object' in args:
-        try:
-            ctype = kwargs['content_type']
-        except:
-            logger = logging.getLogger('as_errors')
-            logger.exception("No object ID was passed in to get_filters.")
-            continue
-
-    
     if _FILTER_CACHE is None:
         filters = []
         for filter_ in conf.FILTERS:
-            for f in args:
-                if f in filter_:
-                    module_name, class_name = filter_.rsplit('.', 1)
-                    try:
-                        module = __import__(module_name, {}, {}, class_name)
-                        filter_ = getattr(module, class_name)
-                    except Exception:
-                        logger = logging.getLogger('as_errors')
-                        logger.exception("Unable to import %s" % (filter_,))
-                        continue
-                    filters.append(filter_)
+            module_name, class_name = filter_.rsplit('.', 1)
+            try:
+                module = __import__(module_name, {}, {}, class_name)
+                filter_ = getattr(module, class_name)
+            except Exception:
+                logger = logging.getLogger('as_errors')
+                logger.exception("Unable to import %s" % (filter_,))
+                continue
+            filters.append(filter_)
         _FILTER_CACHE = filters
     for f in _FILTER_CACHE:
         yield f
