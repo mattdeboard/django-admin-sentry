@@ -11,9 +11,15 @@
 {% for filter in filters %}
 <div class="sidebar-module sidebar-module-{{ filter.column }}">
   {% if filter.show_label %}
-  <h2 title="Top twenty {{ filter.label }}s according to number of log entries">
-    Top 20: {{ filter.label }}s
-  </h2>
+  <span class="flabel">
+    <h2 title="Top twenty {{ filter.label }}s according to number of log entries">
+      Top 20: 
+      <form method="post" action="{% url obj-view %}">
+        {% for field in dropdown %}
+        {{ field }}
+        {% endfor %}
+    </h2>
+  </span>
   {% endif %}
   <form method="get" action="{{ filter.get_query_string|safe }}">
     {{ filter.render }}
