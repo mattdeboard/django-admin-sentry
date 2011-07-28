@@ -18,6 +18,8 @@ class InstanceLog(object):
         
     def get_obj_info(self):
         name = self.query[0].object_repr.split(' -- ')
+        if len(name) == 1:
+            name.append(' ')
         return (self.query.count(), name[0], name[1])
                 
     def get_editors(self):
