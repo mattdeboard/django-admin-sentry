@@ -394,12 +394,12 @@ a.userlink:hover, a.objlink:hover {
     font-variant: small-caps;
     padding: 6px 8px;
     display: inline;
-    float: right;
     margin: 0 10px 0 0;
     font-size: 14px;
     line-height: 17px;
     color: #aaa;
     font-weight: bold;
+    line-height: 30px;
 }
 
 .paging-endless li a, .chartswitch {
