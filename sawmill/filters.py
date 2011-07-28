@@ -78,11 +78,15 @@ class ChoiceWidget(Widget):
 
 
 class ObjChoiceWidget(Widget):
+    object_types = {25: "Social Link", 23: "Google Analytic",
+                    21: "SEO Site Redirect", 20: "SEO Site",
+                    19: "Configuration", 15: "Social Link", 14: "Index",
+                    7: "Site", 3: "User", 2: "Group"}
+    
     def render(self, value, **kwargs):
         choices = self.filter.get_choices()
         query_string = self.get_query_string()
         column = self.filter.get_query_param()
-
         output = ['<ul class="%s-list filter-list" rel="%s">' %
                   (self.filter.column, column)]
 
@@ -174,19 +178,20 @@ class ObjectFilter(BaseFilter):
     widget = ObjChoiceWidget
 
     def get_choices(self):
+        query = """SELECT DISTINCT djl2.id, djl1.object_id, djl1.object_repr,
+                                   djl1.content_type_id,
+                                   COUNT(djl1.content_type_id) AS num_items
+                   FROM django_admin_log AS djl1
+                       INNER JOIN django_admin_log AS djl2
+                       ON djl1.id=djl2.id
+                   WHERE djl1.content_type_id = %s
+                   GROUP BY djl1.object_repr, djl1.content_type_id
+                   ORDER BY num_items DESC
+                   LIMIT 20
+                  """ % 21
         logdict = SortedDict()
-        results = LogEntry.objects.raw(
-            """SELECT DISTINCT djl2.id, djl1.object_id, djl1.object_repr,
-                               djl1.content_type_id,
-                               COUNT(djl1.content_type_id) AS num_items
-               FROM django_admin_log AS djl1
-                   INNER JOIN django_admin_log AS djl2
-                   ON djl1.id=djl2.id
-               WHERE djl1.content_type_id = %s
-               GROUP BY djl1.object_repr, djl1.content_type_id
-               ORDER BY num_items DESC
-               LIMIT 20
-            """ % 15)
+        results = LogEntry.objects.raw(query)
+            
         
         for result in sorted(results, key=self.get_num_items):
             name, objid, num, mod = (result.object_repr, result.object_id,
