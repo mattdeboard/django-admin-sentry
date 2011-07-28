@@ -61,20 +61,17 @@ class InstanceLog(object):
 
     def log_dates(self):
         '''
-        Returns a list of 3-tuples. Each 3-tuple contains (year, month, day) of
-        the LogEntry's creation date.
         
         '''
         at = 'action_time'
         dates = []
+        counts = []
         count = 1
         for date, group in itertools.groupby(self.query, key=self._extract_date):
-            dates.append([int(date.strftime("%s")) * 1000, len(list(group))])
+            dates.append([int(date.strftime("%s")) * 1000])
+            counts.append(len(list(group)))
             
-        if dates:
-            count = math.ceil(max(dates, key=self._get_max_date)[1] * 1.1)
-
-        return {'points': dates, 'max_count': count}
+        return {'points': dates, 'counts': counts}
 
     def _get_max_date(self, entry):
         return entry[1]
