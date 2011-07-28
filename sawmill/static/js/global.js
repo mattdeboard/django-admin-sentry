@@ -22,6 +22,11 @@ $(document).ready(function () {
     function () {
       $("body").css("cursor", "default");
     });
+  
+  $(".sidebar-module").delegate("select#id_content_type","change",function () {
+    console.log(this.value);
+    window.location.href = "/sawmill/activity?&model=" + this.value + "&obj=";
+  });
 });
 
 
