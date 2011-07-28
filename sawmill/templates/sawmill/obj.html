@@ -30,10 +30,15 @@
 
 {% block graph_js %}
 {% with log_group.log_dates as log_dates %}
-<script type="text/javascript">
-var logDates = {{ log_dates.points|to_json }};
-var maxCount = parseInt({{ log_dates.max_count }});
-
+  <script type="text/javascript">
+var dates = {{ log_dates.points|to_json }};
+var logDates = function () {
+  arr = new Array;
+  for (d in dates) {
+    arr.push(new Date(dates[d][0]));
+  }
+  return arr;
+};
 var getColor = function () {
   var colorArray = ['#730046', '#feca80', '#bfbb11', '#7ba012', 
                     '#ffc200', '#b28900', '#fed2bf', '#c93c00'];
@@ -42,7 +47,6 @@ var getColor = function () {
 
 var chart;
 var logCountsByUser = {{ edit_counts|safe }};
-var maxCount = parseInt({{ log_dates.max_count }});
 var editors = {{ editors|safe }};
 var byUserOptions = {
   chart: {
@@ -79,7 +83,7 @@ var byUserOptions = {
         color: '#fff'
       }
     },
-    min: 1,
+    min: 0
   },
     
   series: [{
@@ -112,7 +116,7 @@ for (entry in logCountsByUser) {
 var byObjOptions = {
   chart: {
     renderTo: 'chart',
-    zoomType: 'xy',
+    zoomType: 'x',
     backgroundColor: {
       linearGradient: [350, 0, 500, 500],
       stops: [
@@ -143,6 +147,8 @@ var byObjOptions = {
       month: '%b \'%y',
       year: '%Y'
     },
+    categories: logDates(),
+    tickInterval: 24 * 3600 * 1000 * 30
   },
   
   yAxis: {
@@ -153,13 +159,12 @@ var byObjOptions = {
       }
     },
     min: 0,
-    max: maxCount
   },
   
   series: [{
     name: "Log Entries",
-    type: "area",
-    data: logDates,
+    type: "bar",
+    data: {{ log_dates.counts }},
     color: "#730046",
     title: {
       text: false
@@ -171,7 +176,7 @@ var byObjOptions = {
   }
 };
 
-var chartType = "obj";
+var chartType = "user";
 $(document).ready(function () {
   
   var getOptions = function () {
@@ -183,17 +188,17 @@ $(document).ready(function () {
     return new Highcharts.Chart(options);
   };
   
+  chart = new makeChart();
   
   $(".chartswitch").bind('click', function () {
     if (chartType == "user") {
-      chartType = "obj"; 
+      chartType = "obj";
     } else {
       chartType = "user";
     }
     return makeChart();
   });
 
-  chart = new makeChart();
 });
 </script>
 {% endwith %}
