@@ -1,17 +1,6 @@
 from django import forms
 
-CONTENT_TYPES = (
-    (2, "Groups"),
-    (3, "Users"),
-    (7, "Sites"),
-    (14, "Indices"),
-    (15, "Social Links"),
-    (19, "Configurations"),
-    (20, "SEO Sites"),
-    (21, "SEO Site Redirects"),
-    (23, "Google Analytics"),
-    (25, "Social Links"),
-)
+from sawmill.conf import CONTENT_TYPES
 
 
 class ASLogin(forms.Form):
