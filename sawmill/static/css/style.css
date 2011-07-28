@@ -445,6 +445,12 @@ tspan {
 }
 
 /* Object view style */
+
+div#title {
+    float: left;
+    width: 300px
+}
+
 .object {
     font-family: "Oswald", sans-serif;
     color: #444;
@@ -461,9 +467,14 @@ tspan {
     float: left;
 }
 
+#stats .cats, #stats .answers {
+    line-height: 30px;
+}
+
 #stats .cats {
     float: left;
     margin-right: 20px;
+    text-align: right;
 }
 
 #stats .answers {
@@ -477,7 +488,6 @@ tspan {
     top: 0;
     right: 0;
 }
-
 
 .logcount {
     float: right;
@@ -510,4 +520,16 @@ tspan {
     line-height: 28px;
 }    
 
+#sublogname, .answers {
+    font-family: "Lucida Grande", "Lucida Sans", sans-serif;
+}
+
+h2#sublogname {
+    font-weight: normal;
+    margin-top: 5px;
+}
+
+#obj_header {
+    position: relative;
+}
 /* End object view style */

@@ -164,28 +164,6 @@ class ObjectFilter(BaseFilter):
     label = 'Object'
     column = 'object'
     widget = ObjChoiceWidget
-    model = '' # model id
-    obj = '' # object id
-
-    # def get_choices(self):
-    #     logdict = SortedDict([])
-    #     logs = LogEntry.objects.all()
-    #     res = [(len(list(group)), obj) for obj, group in itertools.groupby\
-    #            (logs, key=self.get_objs)]
-    #     # sort the list of results, then reverse it to get them in order by
-    #     # number of entries. Then, store the value of the top 10 entries.
-    #     # Then, reverse THAT list to get them in reverse order, so they're
-    #     # stored in the SortedDict in descending order. :)
-    #     res.sort()
-    #     res.reverse()
-    #     res = res[:10]
-    #     res.reverse()
-    #     for pair in res:
-    #         log = LogEntry.objects.filter(object_repr=pair[1])[0]
-    #         logdict.insert(0, "%s+%s" % (log.content_type.id, log.object_id),
-    #                        pair)
-            
-    #     return logdict
 
     def get_choices(self):
         logdict = SortedDict()
@@ -206,7 +184,6 @@ class ObjectFilter(BaseFilter):
             logdict.insert(0,"%s+%s" % (mod, objid), (num, name))
 
         return logdict
-        
     
     def get_num_items(self, r):
         return r.num_items

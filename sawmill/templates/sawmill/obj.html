@@ -195,9 +195,12 @@ $(document).ready(function () {
 </div>
 <div class="object">
   <div id="obj_header">
-    <h1 id="logname">
-      <a href="{{ log_group.admin_url }}">{{ log_group.name|capfirst }}</a>
-    </h1>
+    <div id="title">
+      <h1 id="logname">
+        <a href="{{ log_group.admin_url }}">{{ log_group.name|capfirst }}</a>
+      </h1>
+      <h2 id="sublogname">{{ log_group.name2|capfirst }}</h2>
+    </div><!-- #title -->
     <span class="chartbutton">
       <a class="chartswitch" href="#">Change Chart Type</a>
     </span>
