@@ -177,6 +177,10 @@ class ObjectFilter(BaseFilter):
     column = 'object'
     widget = ObjChoiceWidget
 
+    def __init__(self, request, ctype):
+        self.request = request
+        self.ctype = ctype
+
     def get_choices(self):
         query = """SELECT DISTINCT djl2.id, djl1.object_id, djl1.object_repr,
                                    djl1.content_type_id,
@@ -188,7 +192,7 @@ class ObjectFilter(BaseFilter):
                    GROUP BY djl1.object_repr, djl1.content_type_id
                    ORDER BY num_items DESC
                    LIMIT 20
-                  """ % 21
+                  """ % self.ctype
         logdict = SortedDict()
         results = LogEntry.objects.raw(query)
             
