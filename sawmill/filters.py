@@ -175,10 +175,11 @@ class ObjectFilter(BaseFilter):
                    INNER JOIN django_admin_log AS djl2
                    ON djl1.id=djl2.id
                GROUP BY djl1.object_repr, djl1.content_type_id
-               ORDER BY num_items
+               ORDER BY num_items DESC
+               LIMIT 20
             """)
         
-        for result in results:
+        for result in sorted(results, key=self.get_num_items):
             name, objid, num, mod = (result.object_repr, result.object_id,
                                      result.num_items, result.content_type_id)
             logdict.insert(0,"%s+%s" % (mod, objid), (num, name))
