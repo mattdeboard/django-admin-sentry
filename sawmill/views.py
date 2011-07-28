@@ -68,13 +68,15 @@ def obj_overview(request):
     # needs superuser check
     filters = []
     query_dict = request.GET.copy()
-    model = query_dict['model'] or 19
-    obj_id = query_dict['obj'] or 94
 
-    if request.method == 'POST':
-        model = request.POST.copy()['dropdown']
-        obj_id = ''
-        
+    if request.is_ajax():
+        if request.method == 'POST':
+            model = request.POST['model']
+            obj = request.POST['obj']
+    else:
+        model = query_dict['model']
+        obj_id = query_dict['obj']
+
     for _filter in get_filters():
         if _filter.label == "Object":
             filters.append(_filter(request, model))
