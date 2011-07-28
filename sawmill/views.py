@@ -77,7 +77,7 @@ def obj_overview(request):
         
     for _filter in get_filters():
         if _filter.label == "Object":
-            filters.append(_filter(request))
+            filters.append(_filter(request, model))
 
     form = ContentDropDown()
     log_group = InstanceLog(model=model, obj_id=obj_id)
