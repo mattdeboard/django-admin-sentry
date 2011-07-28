@@ -89,15 +89,19 @@ class ObjChoiceWidget(Widget):
             if len(val) >= 20:
                 val = val[:17] + "..."
                     
-            output.append('<li%(active)s rel="%(key)s"><a href="?&amp;model=%(m'
-                          'odel)s&amp;obj=%(obj)s">%(value)s<span class="c'
-                          'ount">%(count)s</span></a></li>' %
-                          dict(active=value == key and ' class="active"' or '',
-                               key=key,
-                               model=m,
-                               obj=o,
-                               value=val,
-                               count=count,))
+            output.append(
+                """<li%(active)s rel="%(key)s">
+                       <a href="?&amp;model=%(model)s&amp;obj=%(obj)s">
+                           %(value)s
+                           <span class="count">%(count)s</span>
+                       </a>
+                   </li>
+                """ % dict(active=value == key and ' class="active"' or '',
+                           key=key,
+                           model=m,
+                           obj=o,
+                           value=val,
+                           count=count,))
         output.append('</ul>')
         return mark_safe('\n'.join(output))
                     
@@ -174,10 +178,11 @@ class ObjectFilter(BaseFilter):
                FROM django_admin_log AS djl1
                    INNER JOIN django_admin_log AS djl2
                    ON djl1.id=djl2.id
+               WHERE djl1.content_type_id = %s
                GROUP BY djl1.object_repr, djl1.content_type_id
                ORDER BY num_items DESC
                LIMIT 20
-            """)
+            """ % 15)
         
         for result in sorted(results, key=self.get_num_items):
             name, objid, num, mod = (result.object_repr, result.object_id,
