@@ -11,7 +11,9 @@
 {% for filter in filters %}
 <div class="sidebar-module sidebar-module-{{ filter.column }}">
   {% if filter.show_label %}
-  <h2{% if filter.label == "User" %} title="Users with no log entries on record will not be shown here"{% endif %} {% if filter.label == "Object" %} title="Top ten most active objects"{% endif %}>{% trans filter.label %}</h2>
+  <h2 title="Top twenty {{ filter.label }}s according to number of log entries">
+    Top 20: {{ filter.label }}s
+  </h2>
   {% endif %}
   <form method="get" action="{{ filter.get_query_string|safe }}">
     {{ filter.render }}
@@ -197,7 +199,9 @@ $(document).ready(function () {
   <div id="obj_header">
     <div id="title">
       <h1 id="logname">
-        <a href="{{ log_group.admin_url }}">{{ log_group.name|capfirst }}</a>
+        <a href="/admin/{{ log_group.admin_url }}">
+          {{ log_group.name|capfirst }}
+        </a>
       </h1>
       <h2 id="sublogname">{{ log_group.name2|capfirst }}</h2>
     </div><!-- #title -->
