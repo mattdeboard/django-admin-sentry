@@ -60,15 +60,19 @@ class ChoiceWidget(Widget):
             if len(val) >= 20:
                 val = val[:17] + "..."
                 
-            output.append('<li%(active)s rel="%(key)s"><a href="%(query_string)'
-                          's&amp;%(column)s=%(key)s">%(value)s<span class="'
-                          'count">%(count)s</span></a></li>' %
-                          dict(active=value == key and ' class="active"' or '',
-                               column=column,
-                               key=key,
-                               value=val,
-                               query_string=query_string,
-                               count=count,))
+            output.append(
+                """<li%(active)s rel="%(key)s">
+                       <a href="%(query_string)s&amp;%(column)s=%(key)s">
+                           %(value)s
+                           <span class="count">%(count)s</span>
+                       </a>
+                   </li>
+                """ % dict(active=value == key and ' class="active"' or '',
+                           column=column,
+                           key=key,
+                           value=val,
+                           query_string=query_string,
+                           count=count,))
         output.append('</ul>')
         return mark_safe('\n'.join(output))
 
