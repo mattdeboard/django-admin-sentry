@@ -6,7 +6,7 @@ from django.core.cache import cache
 from sawmill import conf
 
 
-MINUTES_TO_CACHE = 60
+SECONDS_TO_CACHE = 300
 _FILTER_CACHE = None
 
 def get_filters():
@@ -35,7 +35,7 @@ def get_action_logs(queryset, action):
         # `action` comes in as a string from request.GET, so must force
         # to int.
         results = queryset.filter(action_flag=int(action))
-        #cache.set(cache_key, results, MINUTES_TO_CACHE * 60)
+        cache.set(cache_key, results, SECONDS_TO_CACHE)
 
     return results
 
@@ -47,7 +47,7 @@ def get_user_logs(queryset, user):
         # `user` comes in as a string from request.GET, so must force to
         # int.
         results = queryset.filter(user=int(user))
-        cache.set(cache_key, results, MINUTES_TO_CACHE * 60)
+        cache.set(cache_key, results, SECONDS_TO_CACHE)
 
     return results
 
@@ -57,6 +57,6 @@ def cache_users():
 
     if not users:
         users = User.objects.all()
-        cache.set(cache_key, users, MINUTES_TO_CACHE * 1)
+        cache.set(cache_key, users, SECONDS_TO_CACHE)
 
     return users
