@@ -102,13 +102,15 @@ class InstanceLog(object):
         '''
         at = 'action_time'
         dates = []
-        timespan = 14 # timespan in days
+        timespan = 30 # timespan in days
         date_query = self.query.order_by('-action_time')
         timed = date_query[0].action_time - datetime.timedelta(days=timespan)
         datelist = BoundedList(timespan)
         for date, group in itertools.groupby(date_query,
                                              key=self._extract_date):
-            datelist.append([int(date.strftime("%s")) * 1000, len(list(group))])
+            if date >= timed.date():
+                datelist.append([int(date.strftime("%s")) * 1000,
+                                 len(list(group))])
 
         return {'points': datelist}
 
