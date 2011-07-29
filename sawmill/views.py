@@ -82,7 +82,7 @@ def obj_overview(request):
     for _filter in get_filters():
         if _filter.label == "Object":
             filters.append(_filter(request, model))
-    time = 10
+    time = 30
     cache_key = "instancelog:%s:%s:%s" % (model, obj_id, time)
     log_group = cache.get(cache_key)
     if not log_group:

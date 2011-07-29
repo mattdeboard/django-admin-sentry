@@ -105,6 +105,11 @@ class InstanceLog(object):
         dates = []
         date_query = self.query.order_by('-action_time')
         datelist = BoundedList(self.timespan)
+        # To Do:
+        # There is room for some optimization here. If the total number of
+        # results is less than self.timespan, it would be useful to lookup
+        # all InstanceLog cache keys and get the cache key with the smallest
+        # timespan while still being larger than the number of results. 
         for date, g in itertools.groupby(date_query, key=self._extract_date):
             datelist.append([int(date.strftime("%s")) * 1000, len(list(g))],
                             silent=True)
