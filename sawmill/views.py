@@ -4,6 +4,7 @@ import json
 from django.contrib import messages
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth import login, authenticate, logout
+from django.core.cache import cache
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
@@ -66,6 +67,7 @@ def as_logout(request):
 @login_required(login_url='/sawmill/login')
 def obj_overview(request):
     # needs superuser check
+    form = ContentDropDown()
     filters = []
     query_dict = request.GET.copy()
 
@@ -81,8 +83,12 @@ def obj_overview(request):
         if _filter.label == "Object":
             filters.append(_filter(request, model))
 
-    form = ContentDropDown()
-    log_group = InstanceLog(model=model, obj_id=obj_id)
+    cache_key = "instancelog:%s:%s" % (model, obj_id)
+    log_group = cache.get(cache_key)
+    if not log_group:
+        log_group = InstanceLog(model=model, obj_id=obj_id)
+        cache.set(cache_key, log_group, MINUTES_TO_CACHE * 5)
+        
     editors = json.dumps([res[0] for res in log_group.get_editors()])
     edit_counts = json.dumps(log_group.get_editors())
     return render_to_response('sawmill/obj.html',
