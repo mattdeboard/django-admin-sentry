@@ -1,8 +1,45 @@
+import datetime
 import itertools
 import math
 
 from django.contrib.admin.models import LogEntry
 
+
+class ConstraintError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return repr(self.message)
+        
+
+class BoundedList(list):
+    '''
+    A list that will only accept new members while the list's length is
+    less than a specified amount.
+    
+    '''
+    def __init__(self, length):
+        super(BoundedList, self).__init__()
+        self.len = length
+
+    def append(self, thing, silent=False):
+        '''
+        BoundedList.append(thing[, silent=False]) ->
+        Appends 'thing' to an instance of BoundedList, iff. len(self) is
+        less than self.len. If silent == True, the append process will
+        simply stop when the limit is reached. If False, it will raise
+        and exception.
+        
+        '''
+        warning = "BoundedList is constrained to length %s." % self.len
+        if len(self) < self.len:
+            super(BoundedList, self).append(thing)
+        elif silent == True:
+            return
+        else:
+            raise ConstraintError(warning)
+                
 
 class InstanceLog(object):
     '''
@@ -65,13 +102,15 @@ class InstanceLog(object):
         '''
         at = 'action_time'
         dates = []
-        counts = []
-        count = 1
-        for date, group in itertools.groupby(self.query, key=self._extract_date):
-            dates.append(int(date.strftime("%s")) * 1000)
-            counts.append(len(list(group)))
-            
-        return {'points': dates, 'counts': counts}
+        timespan = 14 # timespan in days
+        date_query = self.query.order_by('-action_time')
+        timed = date_query[0].action_time - datetime.timedelta(days=timespan)
+        datelist = BoundedList(timespan)
+        for date, group in itertools.groupby(date_query,
+                                             key=self._extract_date):
+            datelist.append([int(date.strftime("%s")) * 1000, len(list(group))])
+
+        return {'points': datelist}
 
     def _get_max_date(self, entry):
         return entry[1]

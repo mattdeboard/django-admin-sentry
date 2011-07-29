@@ -147,8 +147,7 @@ var byObjOptions = {
         month: '%b \'%y',
         year: '%Y'
       },
-      categories: {{ log_dates.points|to_json }},
-      tickInterval: 24 * 3600 * 1000
+    endOnTick: true
   },
   
   yAxis: {
@@ -158,12 +157,12 @@ var byObjOptions = {
               color: '#fff'
           }
       },
-      min: 0,
+      min: 0
   },
   
   series: [{
     name: "Log Entries",
-    data: {{ log_dates.counts }},
+    data: {{ log_dates.points|to_json }},
     color: "#730046",
     title: {
       text: false
