@@ -11,6 +11,29 @@ from django.utils.html import escape
 from sawmill.helpers import cache_users
 
 
+
+class SinceLogin(object):
+    '''
+    Returns an HTML object that displays new items since a user's last
+    login.
+    
+    '''
+    def __init__(self, filter, request):
+        self.request = request
+        self.user = request.user
+        self.filter = filter
+
+    def render(self):
+        return mark_safe(
+            '''
+            <div>Hi there</div>
+            ''')
+
+
+class SinceFilter(object):
+    
+    
+
 class Widget(object):
     def __init__(self, filter, request):
         self.filter = filter
