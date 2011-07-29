@@ -8,6 +8,10 @@ FILTERS = (
     'sawmill.filters.ObjectFilter',
 )       
 
+WIDGETS = (
+    'sawmill.filters.SinceLogin',
+)
+
 CONTENT_TYPES = (
     (2, "Groups"),
     (3, "Users"),

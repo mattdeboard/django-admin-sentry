@@ -8,6 +8,7 @@ class ASLogin(forms.Form):
     password = forms.CharField(max_length=30,
                                widget=forms.PasswordInput(render_value=False))
 
+    
 class ContentDropDown(forms.Form):
     content_type = forms.CharField(max_length=25,
                                    widget=forms.Select(choices=CONTENT_TYPES))
