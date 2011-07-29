@@ -82,12 +82,12 @@ def obj_overview(request):
     for _filter in get_filters():
         if _filter.label == "Object":
             filters.append(_filter(request, model))
-
-    cache_key = "instancelog:%s:%s" % (model, obj_id)
+    time = 10
+    cache_key = "instancelog:%s:%s:%s" % (model, obj_id, time)
     log_group = cache.get(cache_key)
     if not log_group:
-        log_group = InstanceLog(model=model, obj_id=obj_id)
-        cache.set(cache_key, log_group, MINUTES_TO_CACHE * 5)
+        log_group = InstanceLog(model=model, obj_id=obj_id, timespan=time)
+        cache.set(cache_key, log_group, SECONDS_TO_CACHE)
         
     editors = json.dumps([res[0] for res in log_group.get_editors()])
     edit_counts = json.dumps(log_group.get_editors())

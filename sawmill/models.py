@@ -29,7 +29,7 @@ class BoundedList(list):
         Appends 'thing' to an instance of BoundedList, iff. len(self) is
         less than self.len. If silent == True, the append process will
         simply stop when the limit is reached. If False, it will raise
-        and exception.
+        an exception.
         
         '''
         warning = "BoundedList is constrained to length %s." % self.len
@@ -47,7 +47,7 @@ class InstanceLog(object):
     in a group of log entries for a common model instance.
 
     '''
-    def __init__(self, model=None, obj_id=None):
+    def __init__(self, model=None, obj_id=None, timespan=None):
         if obj_id:
             self.obj_id = obj_id
             self.query = LogEntry.objects.filter(object_id=self.obj_id)\
@@ -57,7 +57,8 @@ class InstanceLog(object):
             q = LogEntry.objects.filter(content_type__id=model)\
                                 .order_by('user')
             self.query = q.filter(object_id=q[0].object_id)
-            
+
+        self.timespan = timespan
         self.count, self.name, self.name2 = self.get_obj_info()
         
     def get_obj_info(self):
@@ -102,17 +103,13 @@ class InstanceLog(object):
         '''
         at = 'action_time'
         dates = []
-        timespan = 30 # timespan in days
         date_query = self.query.order_by('-action_time')
-        timed = date_query[0].action_time - datetime.timedelta(days=timespan)
-        datelist = BoundedList(timespan)
-        for date, group in itertools.groupby(date_query,
-                                             key=self._extract_date):
-            if date >= timed.date():
-                datelist.append([int(date.strftime("%s")) * 1000,
-                                 len(list(group))])
+        datelist = BoundedList(self.timespan)
+        for date, g in itertools.groupby(date_query, key=self._extract_date):
+            datelist.append([int(date.strftime("%s")) * 1000, len(list(g))],
+                            silent=True)
 
-        return {'points': datelist}
+        return {'points': datelist, 'bl_count': len(datelist)}
 
     def _get_max_date(self, entry):
         return entry[1]
