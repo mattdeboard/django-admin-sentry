@@ -11,28 +11,58 @@ from django.utils.html import escape
 from sawmill.helpers import cache_users
 
 
-
 class SinceLogin(object):
     '''
     Returns an HTML object that displays new items since a user's last
     login.
     
     '''
+    actions = {1: "added", 2: "changed", 3: "deleted"}
+    
     def __init__(self, filter, request):
         self.request = request
-        self.user = request.user
         self.filter = filter
 
     def render(self):
-        return mark_safe(
-            '''
-            <div>Hi there</div>
-            ''')
+        results = self.filter.get_logs_since()
+        rescount = results.count()
+        output = [
+            """<ul class="changes-since-list"
+                  rel="{{ request.user.last_login }}">
+                  <li>%s Actions since your last login:</li>
+            """ % rescount]
 
+        for result in results:
+            output.append(
+                """<li class="change-since">
+                     %(user) %(action) %(strobj)
+                     <span class="action-time">%(time)</span>
+                   </li>
+                """ %
+                dict(user=result.user,
+                     action=self.actions[result.action_flag],
+                     strobj=result.object_repr,
+                     time=str(result.action_time)))
+
+        output.append('</ul>')
+        return mark_safe('\n'.join(output))
+            
 
 class SinceFilter(object):
+    """
+    Returns a queryset filtered on the requesting user's last_login property.
     
-    
+    """
+    def __init__(self, request):
+        self.request = request
+        self.user = request.user
+        
+    def get_logs_since(self):
+        ll = self.user.last_login
+        return LogEntry.objects.filter(action_time__gte=ll)\
+                               .filter(user=self.user).order_by('-action_time')
+        
+
 
 class Widget(object):
     def __init__(self, filter, request):
