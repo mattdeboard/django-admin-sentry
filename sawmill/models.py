@@ -68,7 +68,7 @@ class InstanceLog(object):
         counts = []
         count = 1
         for date, group in itertools.groupby(self.query, key=self._extract_date):
-            dates.append([int(date.strftime("%s")) * 1000])
+            dates.append(int(date.strftime("%s")) * 1000)
             counts.append(len(list(group)))
             
         return {'points': dates, 'counts': counts}

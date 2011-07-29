@@ -31,14 +31,13 @@
 {% block graph_js %}
 {% with log_group.log_dates as log_dates %}
   <script type="text/javascript">
-var dates = {{ log_dates.points|to_json }};
-var logDates = function () {
-  arr = new Array;
-  for (d in dates) {
-    arr.push(new Date(dates[d][0]));
-  }
-  return arr;
-};
+// var logDates = function () {
+//    arr = new Array;
+//   for (d in dates) {
+//     arr.push(new Date(dates[d][0]));
+//   }
+//   return arr;
+// };
 var getColor = function () {
   var colorArray = ['#730046', '#feca80', '#bfbb11', '#7ba012', 
                     '#ffc200', '#b28900', '#fed2bf', '#c93c00'];
@@ -123,7 +122,8 @@ var byObjOptions = {
         [0, 'rgb(232, 136, 1)'],
         [1, 'rgb(254, 202, 128)']]
     },
-    height: 200
+    height: 200,
+    defaultSeriesType: "column"
   },
   
   title: {
@@ -132,38 +132,37 @@ var byObjOptions = {
       color: '#fff'
     }
   },
-  
+    
   xAxis: {
-    type: "datetime",
-    title: {
-      text: false
-    },
-    dateTimeLabelFormats: {
-      second: '%H:%M:%S',
-      minute: '%H:%M',
-      hour: '%d %b %H:%M',
-      day: '%e. %b',
-      week: '%e. %b',
-      month: '%b \'%y',
-      year: '%Y'
-    },
-    categories: logDates(),
-    tickInterval: 24 * 3600 * 1000 * 30
+      type: "datetime",
+      title: {
+        text: false
+      },
+      dateTimeLabelFormats: {
+        second: '%H:%M:%S',
+        minute: '%H:%M',
+        hour: '%d %b %H:%M',
+        day: '%b %e',
+        week: '%b %e',
+        month: '%b \'%y',
+        year: '%Y'
+      },
+      categories: {{ log_dates.points|to_json }},
+      tickInterval: 24 * 3600 * 1000
   },
   
   yAxis: {
-    title: {
-      text: "# of Events",
-      style: {
-        color: '#fff'
-      }
-    },
-    min: 0,
+      title: {
+          text: "# of Events",
+          style: {
+              color: '#fff'
+          }
+      },
+      min: 0,
   },
   
   series: [{
     name: "Log Entries",
-    type: "bar",
     data: {{ log_dates.counts }},
     color: "#730046",
     title: {
@@ -172,7 +171,11 @@ var byObjOptions = {
   }],
   
   legend: {
-    enabled: false
+      enabled: false,
+      layout: "vertical",
+      floating: true,
+      shadow: true,
+      align: "left"
   }
 };
 
