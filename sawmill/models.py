@@ -98,9 +98,23 @@ class InstanceLog(object):
         return res[0][0]
 
     def log_dates(self):
-        '''
-        
-        '''
+        # The potential for confusion about this method is high, so I will
+        # attempt to provide some comprehensive comments to explain this.
+        #
+        # The object that is used to instantiate InstanceLog is not a
+        # single log entry. It is actually a 'bundle' of log entries,
+        # representing all the changes to a particular table row.
+        #
+        # An InstanceLog instance creates sub-bundles, grouped by user,
+        # initially. In this method, self.log_dates(), the bundles are
+        # re-ordered by action_time (the date the action occurred).
+        # An InstanceLog instance represents all the data in all the log
+        # entries for a particular table row from the database; in turn,
+        # it outputs bundles of log entries for that table row. There-
+        # fore, when working with this method, it is important to
+        # remember you are not counting or measuring quantity of log
+        # entries. Instead, you are counting and measuring how many
+        # bundles you have, or what dates the bundles represent.
         date_query = self.query.order_by('-action_time')
         timebound = date_query[0].action_time - datetime.timedelta(days=30)
         datelist = []
