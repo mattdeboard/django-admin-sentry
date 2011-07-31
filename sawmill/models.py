@@ -19,11 +19,12 @@ class BoundedList(list):
     less than a specified amount.
     
     '''
-    def __init__(self, length):
+    def __init__(self, length, silent=False):
         super(BoundedList, self).__init__()
         self.len = length
+        self.silent = silent
 
-    def append(self, thing, silent=False):
+    def append(self, thing):
         '''
         BoundedList.append(thing[, silent=False]) ->
         Appends 'thing' to an instance of BoundedList, iff. len(self) is
@@ -35,7 +36,7 @@ class BoundedList(list):
         warning = "BoundedList is constrained to length %s." % self.len
         if len(self) < self.len:
             super(BoundedList, self).append(thing)
-        elif silent == True:
+        elif self.silent == True:
             return
         else:
             raise ConstraintError(warning)
