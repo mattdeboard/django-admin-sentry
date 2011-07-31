@@ -31,13 +31,13 @@
       <div id="navbar">
         {% block submenu %}
         <ul class="submenu">
-          <li>
+          <li id="logout">
             <a href="{% url logout %}">Logout</a>
           </li>
-          <li>
+          <li id="admin">
             <a href="/admin/" target="_blank">Project Admin</a>
           </li>
-          <li>
+          <li id="notifs">
             <a href="#">Notifications</a>
           </li>
         </ul>
@@ -64,4 +64,12 @@
     </div>
     {% endblock body %}
   </body>
+  <div id="footer">
+    <script>
+      {% if request.user %}
+      var currentUser = "{{ request.user }}";
+      {% else %}
+      var currentUser = null;
+      {% endif %}
+    </script>
 </html>

@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  // Listeners
   $("li.row").click(function () {
     var model = this.getAttribute("model_id");
     var obj_id = this.getAttribute("obj_id");
@@ -26,6 +27,16 @@ $(document).ready(function () {
   $(".sidebar-module").delegate("select#id_content_type","change",function () {
     console.log(this.value);
     window.location.href = "/sawmill/activity?&model=" + this.value + "&obj=";
+  });
+
+  var notifs = function () {
+      $.post("/sawmill/notifications/", function(data) {
+          console.log(data);
+      });
+  };
+
+  $("ul.submenu").delegate("li#notifs", "click", function () {
+      notifs();
   });
 });
 

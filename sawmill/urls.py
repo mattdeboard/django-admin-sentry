@@ -14,4 +14,5 @@ urlpatterns = patterns('',
     url(r'^login', views.as_login, name='login'),
     url(r'^logout', views.as_logout, name='logout'),
     url(r'^activity', views.obj_overview, name='obj-view'),
+    url(r'^notifications', views.notifications, name='notifs'),
 )

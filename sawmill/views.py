@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth import login, authenticate, logout
 from django.core.cache import cache
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
@@ -98,4 +99,10 @@ def obj_overview(request):
                                'filters': filters,
                                'dropdown': form},
                               context_instance=RequestContext(request))
+
+def notifications(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            return HttpResponse("hi, thanks for visiting %s" % request.user)
+            
 

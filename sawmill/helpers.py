@@ -27,6 +27,10 @@ def get_filters():
     for f in _FILTER_CACHE:
         yield f
 
+def get_notifs():
+    module = __import__('sawmill.filters', {}, {}, "SinceLogin")
+    return getattr(module, "SinceLogin")
+    
 def get_action_logs(queryset, action):
     cache_key = 'adminlog:action-%s' % action
     results = cache.get(cache_key)
