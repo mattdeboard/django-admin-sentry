@@ -22,15 +22,21 @@ class SinceLogin(object):
     def __init__(self, filter, request):
         self.request = request
         self.filter = filter
-
+        
     def render(self):
         results = self.filter.get_logs_since()
         rescount = results.count()
+
+        if rescount:
+            actionstr = "%s actions since your last login:" % rescount
+        else:
+            actionstr = "No activity since your last login."
+        
         output = [
             """<ul class="changes-since-list"
-                  rel="{{ request.user.last_login }}">
-                  <li>%s Actions since your last login:</li>
-            """ % rescount]
+                  rel="%s">
+                  <li>%s</li>
+            """ % (self.request.user.last_login, actionstr)]
 
         for result in results:
             output.append(
@@ -46,22 +52,6 @@ class SinceLogin(object):
 
         output.append('</ul>')
         return mark_safe('\n'.join(output))
-            
-
-class SinceFilter(object):
-    """
-    Returns a queryset filtered on the requesting user's last_login property.
-    
-    """
-    def __init__(self, request):
-        self.request = request
-        self.user = request.user
-        
-    def get_logs_since(self):
-        ll = self.user.last_login
-        return LogEntry.objects.filter(action_time__gte=ll)\
-                               .filter(user=self.user).order_by('-action_time')
-        
 
 
 class Widget(object):
@@ -210,6 +200,31 @@ class BaseFilter(object):
     def render(self):
         widget = self.get_widget()
         return widget.render(self.get_value())
+
+
+class SinceFilter(BaseFilter):
+    """
+    Returns a queryset filtered on the requesting user's last_login property.
+    
+    """
+    widget = SinceLogin
+    
+    def __init__(self, request):
+        self.request = request
+        self.user = request.user
+        
+    def get_logs_since(self):
+        ll = self.user.last_login
+        return LogEntry.objects.filter(action_time__gte=ll)\
+                               .filter(user=self.user)\
+                               .order_by('-action_time')
+
+    def get_logs_count(self):
+        return self.get_logs_since().count()
+
+    def render(self):
+        widget = self.get_widget()
+        return widget.render()
 
 
 class UserFilter(BaseFilter):

@@ -536,3 +536,28 @@ h2#sublogname {
     position: relative;
 }
 /* End object view style */
+
+#notif_count {
+    font-size: 0.7em;
+    background-color: red;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+#notifications-response {
+    background: #eee;
+    width: 150px;
+    margin: auto;
+    z-index: 1000;
+}
+
+.changes-since-list {
+    list-style-type: none;
+    display: inline;
+}
+
+.changes-since-list li {
+    font-size: 0.7em;
+    font-color: #000;
+}

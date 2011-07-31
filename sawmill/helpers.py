@@ -28,8 +28,8 @@ def get_filters():
         yield f
 
 def get_notifs():
-    module = __import__('sawmill.filters', {}, {}, "SinceLogin")
-    return getattr(module, "SinceLogin")
+    module = __import__('sawmill.filters', {}, {}, "SinceFilter")
+    return getattr(module, "SinceFilter")
     
 def get_action_logs(queryset, action):
     cache_key = 'adminlog:action-%s' % action

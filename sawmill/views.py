@@ -103,6 +103,11 @@ def obj_overview(request):
 def notifications(request):
     if request.is_ajax():
         if request.method == 'POST':
-            return HttpResponse("hi, thanks for visiting %s" % request.user)
+            import sys
+            notifs = get_notifs()
+            resp = notifs(request)
+            return HttpResponse(json.dumps({"list": resp.render(),
+                                            "count": resp.get_logs_count()}),
+                                mimetype="application/json")
             
-
+            

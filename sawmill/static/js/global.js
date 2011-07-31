@@ -1,43 +1,42 @@
+
 $(document).ready(function () {
-  // Listeners
-  $("li.row").click(function () {
-    var model = this.getAttribute("model_id");
-    var obj_id = this.getAttribute("obj_id");
-    window.location.href = "/sawmill/activity?&model=" + model + "&obj=" + obj_id;
-  });
-  
-  $("li.row").hover(
-    function () {
-      $("body").css("cursor", "pointer");
-    },
-    
-    function () {
-      $("body").css("cursor", "default");
+    $.post("/sawmill/notifications/", function(data) {
+        $("div#notifications-response").hide().append(data["list"]);
+        $("span#notif_count").append(data["count"]);
     });
 
-  $(".chartswitch").hover(
-    function () {
-      $("body").css("cursor", "pointer");
-    },
-    
-    function () {
-      $("body").css("cursor", "default");
+    // Listeners
+    $("li.row").click(function () {
+        var model = this.getAttribute("model_id");
+        var obj_id = this.getAttribute("obj_id");
+        window.location.href = "/sawmill/activity?&model=" + model + "&obj=" + obj_id;
     });
-  
-  $(".sidebar-module").delegate("select#id_content_type","change",function () {
-    console.log(this.value);
-    window.location.href = "/sawmill/activity?&model=" + this.value + "&obj=";
-  });
+    
+    $("li.row").hover(
+        function () {
+            $("body").css("cursor", "pointer");
+        },
+        
+        function () {
+            $("body").css("cursor", "default");
+        });
+    
+    $(".chartswitch").hover(
+        function () {
+            $("body").css("cursor", "pointer");
+        },
+        
+        function () {
+            $("body").css("cursor", "default");
+        });
+    
+    $(".sidebar-module").delegate("select#id_content_type","change",function () {
+        console.log(this.value);
+        window.location.href = "/sawmill/activity?&model=" + this.value + "&obj=";
+    });
 
-  var notifs = function () {
-      $.post("/sawmill/notifications/", function(data) {
-          console.log(data);
-      });
-  };
-
-  $("ul.submenu").delegate("li#notifs", "click", function () {
-      notifs();
-  });
+    
+    $("ul.submenu").delegate("li#notifs", "click", function () {
+        $("div#notifications-response").toggle();
+    });
 });
-
-
