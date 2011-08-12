@@ -1,8 +1,8 @@
-==============
-Django-Sawmill
-==============
+===================
+django-admin-sentry
+===================
 
-Sawmill is an interactive admin log viewer designed to let you do something useful with your logs.
+django-admin-sentry is an interactive admin log viewer designed to let you do something useful with your logs.
 
 As of this sub-1.0 release, interaction with the admin logging system is fairly limited, but it is more robust than the default system. (Admittedly, this isn't saying much.)
 
@@ -44,4 +44,4 @@ Navigate to `yourdomain.com/admin_sentry`. If you are not logged into your app's
 Credits
 --------
 
-Sawmill is modeled on heavily David Cramer's excellent `django-sentry <https://github.com/dcramer/django-sentry>`_. If you are familiar with Sentry then Sawmill will not seem foreign to you whatsoever.
+django-admin-sentry is modeled on heavily David Cramer's excellent `django-sentry <https://github.com/dcramer/django-sentry>`_. If you are familiar with Sentry then AdminSentry will not seem foreign to you whatsoever.
