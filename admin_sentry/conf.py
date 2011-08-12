@@ -21,10 +21,6 @@ CONTENT_TYPES = (
     (25, "Social Links"),
 )
 
-TEMPLATE_DIRS = (
-    '/home/web/admin_sentry/templates/admin_sentry',
-)
-
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
