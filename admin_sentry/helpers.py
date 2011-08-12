@@ -3,7 +3,7 @@ import logging
 from django.contrib.auth.models import User
 from django.core.cache import cache
 
-from sawmill import conf
+from admin_sentry import conf
 
 
 SECONDS_TO_CACHE = 300

@@ -3,9 +3,9 @@ USE_L10N = True
 LOGIN_URL = '/admin'
 
 FILTERS = (
-    'sawmill.filters.UserFilter',
-    'sawmill.filters.ActionFilter',
-    'sawmill.filters.ObjectFilter',
+    'admin_sentry.filters.UserFilter',
+    'admin_sentry.filters.ActionFilter',
+    'admin_sentry.filters.ObjectFilter',
 )       
 
 CONTENT_TYPES = (
@@ -22,7 +22,7 @@ CONTENT_TYPES = (
 )
 
 TEMPLATE_DIRS = (
-    '/home/web/sawmill/templates/sawmill',
+    '/home/web/admin_sentry/templates/admin_sentry',
 )
 
 TEMPLATE_LOADERS = (

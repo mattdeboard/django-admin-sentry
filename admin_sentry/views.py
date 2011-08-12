@@ -9,15 +9,15 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 
-from sawmill.decorators import login_required
-from sawmill.forms import ASLogin, ContentDropDown
-from sawmill.helpers import *
-from sawmill.models import InstanceLog
-from sawmill.templatetags.helpertags import extract_user
+from admin_sentry.decorators import login_required
+from admin_sentry.forms import ASLogin, ContentDropDown
+from admin_sentry.helpers import *
+from admin_sentry.models import InstanceLog
+from admin_sentry.templatetags.helpertags import extract_user
 
 ACTIONS = {1: 'Addition', 2: 'Change', 3: 'Deletion'}
 
-@login_required(login_url='/sawmill/login/')
+@login_required(login_url='/admin_sentry/login/')
 def index(request):
     # needs superuser verification
     filters = []
@@ -33,7 +33,7 @@ def index(request):
         qs = get_action_logs(qs, request.GET["action"])
 
     users = cache_users()
-    return render_to_response('sawmill/index.html', 
+    return render_to_response('admin_sentry/index.html', 
                               {'results':qs,'changes':ACTIONS.iterkeys(),
                                'filters':filters},
                               context_instance=RequestContext(request))
@@ -47,7 +47,7 @@ def as_login(request):
         if user is not None:
             if user.is_superuser:
                 login(request, user)
-                return redirect('/sawmill')
+                return redirect('/admin_sentry')
             else:
                 messages.error(request, "You do not have proper permissions to "
                                "use this application. Ensure you are logging in"
@@ -57,14 +57,14 @@ def as_login(request):
                            "ou are logging in using your application's admi"
                            "n user/pass.", fail_silently=True)
 
-    return render_to_response('sawmill/login.html', {'form': form},
+    return render_to_response('admin_sentry/login.html', {'form': form},
                               context_instance=RequestContext(request))
 
 def as_logout(request):
     logout(request)
-    return render_to_response("sawmill/logout.html")
+    return render_to_response("admin_sentry/logout.html")
 
-@login_required(login_url='/sawmill/login')
+@login_required(login_url='/admin_sentry/login')
 def obj_overview(request):
     # needs superuser check
     form = ContentDropDown()
@@ -91,7 +91,7 @@ def obj_overview(request):
         
     editors = json.dumps([res[0] for res in log_group.get_editors()])
     edit_counts = json.dumps(log_group.get_editors())
-    return render_to_response('sawmill/obj.html',
+    return render_to_response('admin_sentry/obj.html',
                               {'editors': editors,
                                'edit_counts': edit_counts,
                                'log_group': log_group,

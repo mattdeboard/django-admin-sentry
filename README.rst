@@ -14,22 +14,22 @@ Installation
 
 First, install the package:
 
-  `$ pip install git+git://github.com/mattdeboard/django-sawmill.git`
+  `$ pip install git+git://github.com/mattdeboard/django-admin-sentry.git`
 
 Then, add the following to your package's settings.INSTALLED_APPS:
 
   'paging',
-  'sawmill',
+  'admin_sentry',
 
-'paging' must precede 'sawmill'.
+'paging' must precede 'admin_sentry'.
   
 Finally, add the following lines to your project's `urls.py`:
 
-  import sawmill
+  import admin_sentry
 
   urlpatterns = pattern('',
   ...
-  (r'^sawmill/', include('sawmill.urls')),
+  (r'^admin_sentry/', include('admin_sentry.urls')),
   ...
 
 
@@ -37,7 +37,7 @@ Finally, add the following lines to your project's `urls.py`:
 Logging in
 -----------
 
-Navigate to `yourdomain.com/sawmill`. If you are not logged into your app's admin panel, you'll be prompted to log in. Once you do, you'll then see the interface.
+Navigate to `yourdomain.com/admin_sentry`. If you are not logged into your app's admin panel, you'll be prompted to log in. Once you do, you'll then see the interface.
 
 
 --------

@@ -8,7 +8,7 @@ from django.utils.datastructures import SortedDict
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 
-from sawmill.helpers import cache_users
+from admin_sentry.helpers import cache_users
 
 
 class Widget(object):

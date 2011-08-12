@@ -1,6 +1,6 @@
 from django import forms
 
-from sawmill.conf import CONTENT_TYPES
+from admin_sentry.conf import CONTENT_TYPES
 
 
 class ASLogin(forms.Form):

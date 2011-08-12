@@ -2,7 +2,7 @@ import os
 
 from django.conf.urls.defaults import *
 
-from sawmill import views
+from admin_sentry import views
 
 AS_ROOT = os.path.dirname(__file__)
 STATIC_ROOT = AS_ROOT + '/static'
